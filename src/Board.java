@@ -66,21 +66,41 @@ public class Board {
 		return possibleMoves;	
 	}
 	
-	public int countAvailableCaptures(){
+	
+	/** Determine the tile value of each tile in the board
+	 */
+	public void determineTileValue(){
+		int i, j;
 		
+	}
+	
+	
+	/** Count available cells for capture
+	 * @return Number of hexagonal cells available for capture by a single move
+	 */
+	public int countAvailableCaptures(){
+		int i, j;
+		for(i = 0; i<4*n-1; i++){
+			for(j = 0; j<4*n-1; j++){
+				if(board[i][j].getTileValue() > 0){
+					avlbCaptures += board[i][j].getTileValue();
+				}
+				
+			}
+		}
 		return avlbCaptures;
 	}
 	
 	
-	/** Count the maximum number of cells which can captured by one move
-	 * @return maximum number of hexagonal cells which can captured by one move
+	/** Count the maximum number of cells which can be captured by one move
+	 * @return maximum number of hexagonal cells which can be captured by one move
 	 */
 	public int countMaxByOneMove(){
 		int i, j;
 		for(i = 0; i<4*n-1; i++){
 			for(j = 0; j<4*n-1; j++){
-				if (board[i][j].isAvailable() > maxByOneMove){
-					maxByOneMove = board[i][j].isAvailable();
+				if (board[i][j].getTileValue() > maxByOneMove){
+					maxByOneMove = board[i][j].getTileValue();
 				}
 			}
 		}
@@ -88,8 +108,6 @@ public class Board {
 	}
 	
 	
-
-
 }
 
 
