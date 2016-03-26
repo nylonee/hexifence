@@ -29,16 +29,15 @@ public class Board {
 			}
 		}
 		
-		checkError();
+		System.out.print("Error check: "+checkError());
 		printBoard();
 	}
 	
 	
 	public void printBoard(){
-		int i, j;
 		System.out.println(n);
-		for (i = 0; i<4*n-1; i++){
-			for(j = 0; j<4*n-1; j++){
+		for (int i = 0; i<4*n-1; i++){
+			for(int j = 0; j<4*n-1; j++){
 				System.out.print(board[i][j]+" ");
 			}
 			System.out.println();
@@ -46,8 +45,19 @@ public class Board {
 		System.out.println();
 	}
 	
-	public void checkError(){
-		//any not allowed letters?(R,B,-,+)
+	public Boolean checkError(){
+		for (int i = 0; i < 4*n-1; i++) { // Iterate through board
+			for (int j = 0; j < 4*n-1; j++) {
+				int tile = board[i][j];
+
+				//any not allowed letters?(R,B,-,+)
+				if (tile != 'R' && tile != 'B' && tile != '-' && tile != '+')
+					return false;
+				
+				
+			}
+			
+		}
 		//check the number of lines & the number of chars per line
 		//syntax errors not semantic errors
 	}
