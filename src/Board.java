@@ -1,4 +1,3 @@
-import java.io.InputStream;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -26,11 +25,17 @@ public class Board {
 			for(int i = 0; i < size; i++) {
 				for(int j = 0; j < size; j++) {
 					board[i][j] = new Tile();
-					board[i][j].setCharValue(scan.next().charAt(0));
+					
+					char value = scan.next().charAt(0);
+					
+					if (value != 'R' && value != 'B' && value != '-' && value != '+')
+						throw new IllegalArgumentException();
+					
+					board[i][j].setCharValue(value);
 				}
 			}
-		} catch (InputMismatchException|NullPointerException e) {
-			System.err.println("ERROR: Exiting!");
+		} catch (InputMismatchException|IllegalArgumentException e) {
+			System.err.println("SYNTAX ERROR: Exiting!");
 			System.exit(1);
 		}
 		
