@@ -17,5 +17,6 @@ public class Tile {
 	}
 	
 	public int isAvailable(int boardSize) {
+		return 0;
 	}
 }
