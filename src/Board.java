@@ -1,13 +1,11 @@
 import java.util.Scanner;
 
-
 public class Board {
-	public int n;
-	public char[][] board;
-	public int[][] captureBoard;
-	public int possibleMoves;
-	public int maxByOneMove; 
-	public int avlbCaptures;
+	public int n; // The N value
+	public Tile[][] board;
+	public int possibleMoves = 0; // Number of possible moves at this state
+	public int maxByOneMove = 0;  // Maximum number of hexagonal cells that can be captured by one move (0, 1, 2)
+	public int avlbCaptures = 0; // Number of hexagonal cells available for capture by a single move
 	
 	public Board(){
 		buildBoard();
@@ -19,13 +17,11 @@ public class Board {
 		Scanner scan = new Scanner(System.in);
 		
 		n = scan.nextInt();
-		board = new char[4*n-1][4*n-1];
-		
-		captureBoard = new int[4*n-1][4*n-1];
+		board = new Tile[4*n-1][4*n-1];
 		
 		for(i = 0; i<4*n-1; i++){
 			for(j = 0; j<4*n-1; j++){
-				board[i][j] = scan.next().charAt(0);
+				board[i][j].setType(scan.next().charAt(0));
 			}
 		}
 		
@@ -62,32 +58,37 @@ public class Board {
 		//syntax errors not semantic errors
 	}
 	
-
+	
+	
 	public int countPossibleMoves(){
 		
 		
 		return possibleMoves;	
 	}
 	
-	public int isAvailableForCapture(int i, int j){
-		int available = 0;
-		
-		
-		return available;
-		
-	}
-
-	
-	public int countMaxByOneMove(){
-		
-		return maxByOneMove; 
-	}
-	
-	
 	public int countAvailableCaptures(){
 		
 		return avlbCaptures;
 	}
+	
+	
+	/** Count the maximum number of cells which can captured by one move
+	 * @return maximum number of hexagonal cells which can captured by one move
+	 */
+	public int countMaxByOneMove(){
+		int i, j;
+		for(i = 0; i<4*n-1; i++){
+			for(j = 0; j<4*n-1; j++){
+				if (board[i][j].isAvailable() > maxByOneMove){
+					maxByOneMove = board[i][j].isAvailable();
+				}
+			}
+		}
+		return maxByOneMove; 
+	}
+	
+	
+
 
 }
 
