@@ -66,7 +66,7 @@ public class Board {
 	 */
 	public void printBoard(){
 		System.out.println(n);
-		for (int i = 0; i<size; i++){
+		for(int i = 0; i<size; i++){
 			for(int j = 0; j<size; j++){
 				System.out.print(board[i][j].getCharValue()+" ");
 			}
@@ -157,34 +157,28 @@ public class Board {
 		
 		if (numPlus == 1 && !isOutOfBound){
 			board[iIncrease][jIncrease].setCaptureValue(board[iIncrease][jIncrease].getCaptureValue()+1);
+			
+			// Use capture value to now determine the max you can capture in one move
+			if (board[iIncrease][jIncrease].getCaptureValue() > maxByOneMove)
+				maxByOneMove = board[iIncrease][jIncrease].getCaptureValue();
 			return 1;
 		} else {
 			return 0;
 		}
 	}
 	
-		
-	
-	/** Count available cells for capture
+	/** Available cells for capture
 	 * @return Number of hexagonal cells available for capture by a single move
 	 */
-	public int countAvailableCaptures(){
+	public int availableCaptures(){
 		return avlbCaptures;
 	}
 	
 	
-	/** Count the maximum number of cells which can be captured by one move
+	/** Maximum number of cells which can be captured by one move
 	 * @return maximum number of hexagonal cells which can be captured by one move
 	 */
-	public int countMaxByOneMove(){
-		int i, j;
-		for(i = 0; i<size; i++){
-			for(j = 0; j<size; j++){
-				if (board[i][j].getCaptureValue() > maxByOneMove){
-					maxByOneMove = board[i][j].getCaptureValue();
-				}
-			}
-		}
+	public int maxByOneMove(){
 		return maxByOneMove; 
 	}
 }
