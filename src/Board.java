@@ -42,6 +42,9 @@ public class Board {
 		}
 		
 		scan.close();
+		
+		determineCaptureValues();
+		
 		printBoard();
 	}
 	
@@ -66,14 +69,14 @@ public class Board {
 	
 	
 	
-	/** Determine the tile value of each tile in the board
+	/** Determine the capture value of each tile in the board
 	 */
-	public void determineTileValues(){
+	public void determineCaptureValues(){
 		int i, j;
 		for (i = 0; i< 4*n-1; i+=2){
 			for(j =0; j< 4*n-1; j+=2){
 				if (board[i][j].getCharValue() != '-'){
-					determineTileValue(i, j);
+					determineCaptureValue(i, j);
 				}	
 			}
 		}
@@ -83,7 +86,7 @@ public class Board {
 	// fix it. there should be at most only one tile whose tile value increases by 1
 	// do boundary check as well
 	// if more than one + is detected stop it
-	public void determineTileValue(int i, int j){
+	public void determineCaptureValue(int i, int j){
 		int numPlus = 0;
 		boolean isOutOfBound = false;
 		int[] iValues = {i, i+1, i, i+2, i+1, i+2};
@@ -107,7 +110,7 @@ public class Board {
 		}
 		
 		if (numPlus == 1 && !isOutOfBound){
-			board[iIncrease][jIncrease].setTileValue(board[iIncrease][jIncrease].getTileValue()+1);
+			board[iIncrease][jIncrease].setCaptureValue(board[iIncrease][jIncrease].getCaptureValue()+1);
 		}	
 	}
 	
@@ -120,7 +123,7 @@ public class Board {
 		int i, j;
 		for(i = 0; i<4*n-1; i++){
 			for(j = 0; j<4*n-1; j++){
-					avlbCaptures += board[i][j].getTileValue();
+					avlbCaptures += board[i][j].getCaptureValue();
 				
 			}
 		}
@@ -135,8 +138,8 @@ public class Board {
 		int i, j;
 		for(i = 0; i<4*n-1; i++){
 			for(j = 0; j<4*n-1; j++){
-				if (board[i][j].getTileValue() > maxByOneMove){
-					maxByOneMove = board[i][j].getTileValue();
+				if (board[i][j].getCaptureValue() > maxByOneMove){
+					maxByOneMove = board[i][j].getCaptureValue();
 				}
 			}
 		}

@@ -7,10 +7,18 @@ public class Tile {
 	public static final int TWO_CAPTURE = 2;
 	
 	public char charValue;
-	public int tileValue;
+	public int captureValue;
 	
 	public Tile(){
-		tileValue = Tile.ZERO_CAPTURE;
+		captureValue = Tile.ZERO_CAPTURE;
+	}
+
+	public int getCaptureValue() {
+		return captureValue;
+	}
+
+	public void setCaptureValue(int captureValue) {
+		this.captureValue = captureValue;
 	}
 
 	public char getCharValue() {
@@ -21,13 +29,6 @@ public class Tile {
 		this.charValue = charValue;
 	}
 
-	public int getTileValue() {
-		return tileValue;
-	}
-
-	public void setTileValue(int tileValue) {
-		this.tileValue = tileValue;
-	}
 
 	
 }
