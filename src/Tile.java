@@ -7,28 +7,28 @@ public class Tile {
 	public static final int ONE_CAPTURE = 1;
 	public static final int TWO_CAPTURE = 2;
 	
-	public char type;
-	public int available;  
+	public char charValue;
+	public int tileValue;  
 	
 	public Tile(){
-		available = Tile.NOT_AVAILBLE;
+		tileValue = Tile.NOT_AVAILBLE;
 	}
-	
-	public char getTileValue() {
-		return type;
+
+	public char getCharValue() {
+		return charValue;
 	}
-	
-	public void setTile(char type){
-		this.type = type;
+
+	public void setCharValue(char charValue) {
+		this.charValue = charValue;
 	}
-	
-	public int isAvailable() {
-		return available;
+
+	public int getTileValue() {
+		return tileValue;
 	}
-	
-	public void setAvailable(int available){
-		this.available = available;
+
+	public void setTileValue(int tileValue) {
+		this.tileValue = tileValue;
 	}
-	
+
 	
 }
