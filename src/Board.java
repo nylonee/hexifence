@@ -5,7 +5,7 @@ public class Board {
 	public int n; // The N value
 	public int size; // The size of the board (4*n-1)
 	public Tile[][] board;
-	public int possibleMoves; // Number of possible moves at this state
+	public int possibleMoves = 0; // Number of possible moves at this state
 	public int maxByOneMove = 0;  // Maximum number of hexagonal cells that can be captured by one move (0, 1, 2)
 	public int avlbCaptures = 0; // Number of hexagonal cells available for capture by a single move
 	
@@ -39,7 +39,6 @@ public class Board {
 					board[i][j].setCharValue(value);
 					
 					// Populate the total @possibleMoves int
-					possibleMoves = 0;
 					if (value == '+')
 						possibleMoves++;
 				}
@@ -124,14 +123,15 @@ public class Board {
 		for(int i=0; i<size; i++)
 			for(int j=0; j<size; j++)
 				if (checkTile(i, j))
-					determineCaptureValue(i, j);
+					avlbCaptures += determineCaptureValue(i, j);
 	}
 	
 	
 	// fixed it. there should be at most only one tile whose tile value increases by 1
 	// do boundary check as well
 	// if more than one + is detected stop it
-	public void determineCaptureValue(int i, int j){
+	// Returns 1 if capture value has been increased, otherwise 0 (used for counter)
+	public int determineCaptureValue(int i, int j){
 		int numPlus = 0;
 		boolean isOutOfBound = false;
 		int[] iValues = {i, i+1, i, i+2, i+1, i+2};
@@ -157,7 +157,10 @@ public class Board {
 		
 		if (numPlus == 1 && !isOutOfBound){
 			board[iIncrease][jIncrease].setCaptureValue(board[iIncrease][jIncrease].getCaptureValue()+1);
-		}	
+			return 1;
+		} else {
+			return 0;
+		}
 	}
 	
 		
@@ -166,13 +169,6 @@ public class Board {
 	 * @return Number of hexagonal cells available for capture by a single move
 	 */
 	public int countAvailableCaptures(){
-		int i, j;
-		for(i = 0; i<size; i++){
-			for(j = 0; j<size; j++){
-					avlbCaptures += board[i][j].getCaptureValue();
-				
-			}
-		}
 		return avlbCaptures;
 	}
 	
