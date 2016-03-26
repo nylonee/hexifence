@@ -1,10 +1,11 @@
+import java.io.InputStream;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 
 public class Board {
 	public int n;
-	public char[][] board;
-	public int[][] captureBoard;
+	public Tile[][] board;
 	public int possibleMoves;
 	public int maxByOneMove; 
 	public int avlbCaptures;
@@ -14,25 +15,26 @@ public class Board {
 	}
 	
 	public void buildBoard(){
-		
-		int i, j;
 		Scanner scan = new Scanner(System.in);
 		
-		n = scan.nextInt();
-		board = new char[4*n-1][4*n-1];
-		
-		captureBoard = new int[4*n-1][4*n-1];
-		
-		for(i = 0; i<4*n-1; i++){
-			for(j = 0; j<4*n-1; j++){
-				board[i][j] = scan.next().charAt(0);
+		try {
+			n = scan.nextInt();
+
+			board = new Tile[4*n-1][4*n-1];
+
+			for(int i = 0; i < 4*n-1; i++) {
+				for(int j = 0; j < 4*n-1; j++) {
+					board[i][j].setCharValue(scan.next().charAt(0));
+				}
 			}
+		} catch (InputMismatchException e) {
+			System.err.println("ERROR: File doesn't follow correct syntax!");
+			System.exit(1);
 		}
 		
-		System.out.print("Error check: "+checkError());
+		scan.close();
 		printBoard();
 	}
-	
 	
 	public void printBoard(){
 		System.out.println(n);
@@ -45,20 +47,8 @@ public class Board {
 		System.out.println();
 	}
 	
-	public Boolean checkError(){
-		for (int i = 0; i < 4*n-1; i++) { // Iterate through board
-			for (int j = 0; j < 4*n-1; j++) {
-				int tile = board[i][j];
-
-				//any not allowed letters?(R,B,-,+)
-				if (tile != 'R' && tile != 'B' && tile != '-' && tile != '+')
-					return false;
-				
-				
-			}
-			
-		}
-		//check the number of lines & the number of chars per line
+	public void checkError(){
+		//any not allowed letters?(R,B,-,+)
 		//syntax errors not semantic errors
 	}
 	
@@ -90,8 +80,3 @@ public class Board {
 	}
 
 }
-
-
-
-
-
