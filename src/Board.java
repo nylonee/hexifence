@@ -26,8 +26,10 @@ public class Board {
 				for(int j = 0; j < size; j++) {
 					board[i][j] = new Tile();
 					
+					//TODO: Check row and column length = 4*n-1
 					char value = scan.next().charAt(0);
-					
+
+					// any not allowed letters?(R,B,-,+)
 					if (value != 'R' && value != 'B' && value != '-' && value != '+')
 						throw new IllegalArgumentException();
 					
@@ -52,14 +54,7 @@ public class Board {
 			System.out.println();
 		}
 		System.out.println();
-	}
-	
-	public void checkError(){
-		//any not allowed letters?(R,B,-,+)
-		//syntax errors not semantic errors
-	}
-	
-	
+	}	
 	
 	public int countPossibleMoves(){
 		
