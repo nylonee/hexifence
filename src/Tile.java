@@ -10,8 +10,7 @@ public class Tile {
 	public char type;
 	public int available;  
 	
-	public Tile(char typeOfTile){
-		type = typeOfTile;
+	public Tile(){
 		available = Tile.NOT_AVAILBLE;
 	}
 	
