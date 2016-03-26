@@ -77,21 +77,31 @@ public class Board {
 	public void determineTileValue(int i, int j){
 		boolean increase = true;
 		if (board[i][j].getCharValue() == '+'){
-			if(board[i+1][j].getCharValue() != 'R' && board[i+1][j].getCharValue() != 'B'){
+			if(board[i+1][j].getCharValue() == '+'){
 				increase = false;
 			}
 			
-			if(board[i][j+1].getCharValue() != 'R' && board[i][j+1].getCharValue() != 'B'){
+			if(board[i][j+1].getCharValue() == '+'){
 				increase = false;
 			}
 			
-			if(board[i+2][j+1].getCharValue() != 'R' && board[i+2][j+1].getCharValue() != 'B'){
+			if(board[i+2][j+1].getCharValue() == '+'){
 				increase = false;
 			}
 			
-			if(board[i+1][j+2].getCharValue() != 'R' && board[i+2][j+1].getCharValue() != 'B'){
+			if(board[i+1][j+2].getCharValue() == '+'){
 				increase = false;
 			}
+			
+			if(board[i+2][j+2].getCharValue() == '+'){
+				increase = false;
+			}
+		}else{
+			increase = false;
+		}
+		
+		if (increase){
+			board[i][j].setTileValue(board[i][j].getTileValue()+1);
 			
 		}
 		
@@ -105,9 +115,7 @@ public class Board {
 		int i, j;
 		for(i = 0; i<4*n-1; i++){
 			for(j = 0; j<4*n-1; j++){
-				if(board[i][j].getTileValue() > 0){
 					avlbCaptures += board[i][j].getTileValue();
-				}
 				
 			}
 		}
