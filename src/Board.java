@@ -97,10 +97,12 @@ public class Board {
 		// If j > 2n-1, then for tile to be valid i >= j-(2n-1)
 		// If j = 2n-1, then tile is valid
 		int boundary = 2*n-1;
-		if((j < boundary && i <= boundary+j)||(j > boundary && i >= j-boundary)||(j == boundary))
-			return true;
+		if(!((j < boundary && i <= boundary+j)
+				||(j > boundary && i >= j-boundary)
+				||(j == boundary)))
+			return false;
 		
-		return false;
+		return true;
 	}
 	
 	
@@ -130,16 +132,15 @@ public class Board {
 	// fixed it. there should be at most only one tile whose tile value increases by 1
 	// do boundary check as well
 	// if more than one + is detected stop it
-	// Returns 1 if capture value has been increased, otherwise 0 (used for counter)
+	// Returns 1 if hex can be captured, otherwise 0 (used for counter)
 	public int determineCaptureValue(int i, int j){
 		int numPlus = 0;
 		boolean isOutOfBound = false;
 		int[] iValues = {i, i+1, i, i+2, i+1, i+2};
 		int[] jValues = {j, j, j+1, j+1, j+2, j+2};
-		int k;
 		int iIncrease = 0, jIncrease = 0;
 		
-		for(k = 0; k<jValues.length; k++){
+		for(int k=0; k<jValues.length && numPlus<=1; k++){
 			if(!checkTile(iValues[k], jValues[k])){
 				isOutOfBound = true;
 				break;
@@ -150,9 +151,6 @@ public class Board {
 				jIncrease = jValues[k];
 				numPlus++;
 			}
-			if(numPlus > 1){
-				break;
-			}
 		}
 		
 		if (numPlus == 1 && !isOutOfBound){
@@ -161,10 +159,13 @@ public class Board {
 			// Use capture value to now determine the max you can capture in one move
 			if (board[iIncrease][jIncrease].getCaptureValue() > maxByOneMove)
 				maxByOneMove = board[iIncrease][jIncrease].getCaptureValue();
+			
+			// Can capture hex
 			return 1;
-		} else {
-			return 0;
 		}
+		
+		// Can't capture hex
+		return 0;
 	}
 	
 	/** Available cells for capture
@@ -174,11 +175,10 @@ public class Board {
 		return avlbCaptures;
 	}
 	
-	
 	/** Maximum number of cells which can be captured by one move
 	 * @return maximum number of hexagonal cells which can be captured by one move
 	 */
 	public int maxByOneMove(){
-		return maxByOneMove; 
+		return maxByOneMove;
 	}
 }
