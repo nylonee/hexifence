@@ -2,8 +2,7 @@
 
 public class Tile {
 	
-	public static final int NOT_AVAILBLE = -1;
-	public static final int AVAILABLE = 0;
+	public static final int ZERO_CAPTURE = 0;
 	public static final int ONE_CAPTURE = 1;
 	public static final int TWO_CAPTURE = 2;
 	
@@ -11,7 +10,7 @@ public class Tile {
 	public int tileValue;  
 	
 	public Tile(){
-		tileValue = Tile.NOT_AVAILBLE;
+		tileValue = Tile.ZERO_CAPTURE;
 	}
 
 	public char getCharValue() {
