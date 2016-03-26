@@ -13,6 +13,9 @@ public class Board {
 		buildBoard();
 	}
 	
+	/** Build a board by scanning the given input
+	 * 
+	 */
 	public void buildBoard(){
 		Scanner scan = new Scanner(System.in);
 		
@@ -48,6 +51,10 @@ public class Board {
 		printBoard();
 	}
 	
+	
+	/**
+	 * Print this board
+	 */
 	public void printBoard(){
 		System.out.println(n);
 		for (int i = 0; i<size; i++){
@@ -60,6 +67,11 @@ public class Board {
 	}	
 	
 	
+	
+	/** Count the possible moves
+	 * 
+	 * @return the number of possible Moves
+	 */
 	public int countPossibleMoves(){
 		int i, j;
 		possibleMoves = 0;
@@ -77,7 +89,7 @@ public class Board {
 	
 	
 	
-	/** Determine the capture value of each tile in the board
+	/** Determine the capture value of every tile in the board
 	 */
 	public void determineCaptureValues(){
 		int i, j;
@@ -91,7 +103,7 @@ public class Board {
 	}
 	
 	
-	// fix it. there should be at most only one tile whose tile value increases by 1
+	// fixed it. there should be at most only one tile whose tile value increases by 1
 	// do boundary check as well
 	// if more than one + is detected stop it
 	public void determineCaptureValue(int i, int j){
