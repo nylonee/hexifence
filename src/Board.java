@@ -63,14 +63,41 @@ public class Board {
 	}
 	
 	
+	
+	
 	/** Determine the tile value of each tile in the board
 	 */
 	public void determineTileValue(){
 		int i, j;
 		
+		
 	}
 	
 	
+	public void determineTileValue(int i, int j){
+		boolean increase = true;
+		if (board[i][j].getCharValue() == '+'){
+			if(board[i+1][j].getCharValue() != 'R' && board[i+1][j].getCharValue() != 'B'){
+				increase = false;
+			}
+			
+			if(board[i][j+1].getCharValue() != 'R' && board[i][j+1].getCharValue() != 'B'){
+				increase = false;
+			}
+			
+			if(board[i+2][j+1].getCharValue() != 'R' && board[i+2][j+1].getCharValue() != 'B'){
+				increase = false;
+			}
+			
+			if(board[i+1][j+2].getCharValue() != 'R' && board[i+2][j+1].getCharValue() != 'B'){
+				increase = false;
+			}
+			
+		}
+		
+	}
+	
+		
 	/** Count available cells for capture
 	 * @return Number of hexagonal cells available for capture by a single move
 	 */
@@ -102,6 +129,10 @@ public class Board {
 		}
 		return maxByOneMove; 
 	}
+	
+	
+	
+	
 	
 	
 }
