@@ -76,8 +76,8 @@ public class Board {
 		int i, j;
 		possibleMoves = 0;
 		
-		for(i = 0; i< 4*n-1; i++){
-			for(j = 0; j< 4*n-1; j++){
+		for(i = 0; i< size; i++){
+			for(j = 0; j< size; j++){
 				if (board[i][j].getCharValue() == '+'){
 					possibleMoves++;
 				}
@@ -93,8 +93,8 @@ public class Board {
 	 */
 	public void determineCaptureValues(){
 		int i, j;
-		for (i = 0; i< 4*n-1; i+=2){
-			for(j =0; j< 4*n-1; j+=2){
+		for (i = 0; i< size; i+=2){
+			for(j =0; j< size; j+=2){
 				if (board[i][j].getCharValue() != '-'){
 					determineCaptureValue(i, j);
 				}	
@@ -115,7 +115,7 @@ public class Board {
 		int iIncrease = 0, jIncrease = 0;
 		
 		for(k = 0; k<jValues.length; k++){
-			if (iValues[k] >= 4*n-1 || jValues[k] >= 4*n-1){
+			if (iValues[k] >= size || jValues[k] >= size){
 				isOutOfBound = true;
 				break;
 			}
@@ -141,8 +141,8 @@ public class Board {
 	 */
 	public int countAvailableCaptures(){
 		int i, j;
-		for(i = 0; i<4*n-1; i++){
-			for(j = 0; j<4*n-1; j++){
+		for(i = 0; i<size; i++){
+			for(j = 0; j<size; j++){
 					avlbCaptures += board[i][j].getCaptureValue();
 				
 			}
@@ -156,8 +156,8 @@ public class Board {
 	 */
 	public int countMaxByOneMove(){
 		int i, j;
-		for(i = 0; i<4*n-1; i++){
-			for(j = 0; j<4*n-1; j++){
+		for(i = 0; i<size; i++){
+			for(j = 0; j<size; j++){
 				if (board[i][j].getCaptureValue() > maxByOneMove){
 					maxByOneMove = board[i][j].getCaptureValue();
 				}
