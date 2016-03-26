@@ -55,11 +55,10 @@ public class Board {
 		// By this point, the following have been initialized
 		// for this instance of Board:
 		// Tile board[][] (Each Tile object has charValue and captureValue)
-		// int n, size, possibleMoves
+		// int n, size, possibleMoves, maxByOneMove, avlbCaptures
 		
 		printBoard();
 	}
-	
 	
 	/**
 	 * Print this board
@@ -104,30 +103,15 @@ public class Board {
 		
 		return true;
 	}
-	
-	
-	
-	/** Return the possible moves
-	 * 
-	 * Note: The iterator for counting the possible number of moves
-	 * is within buildBoard() in order to reduce the Big-O complexity 
-	 * to 1 after initialization.
-	 * 
-	 * @return the number of possible Moves
-	 */
-	public int possibleMoves(){
-		return possibleMoves;
-	}
-	
-	/** Determine the capture value of every tile in the board
+
+	/** Determine if a hex can be captured in a single move
+	 * Simultaneously uses the values to populate avlbCaptures
 	 */
 	public void determineCaptureValues(){
-		for(int i=0; i<size; i++)
-			for(int j=0; j<size; j++)
-				if (checkTile(i, j))
-					avlbCaptures += determineCaptureValue(i, j);
+		for(int i=0; i<size; i+=2)
+			for(int j=0; j<size; j+=2)
+				avlbCaptures += determineCaptureValue(i, j);
 	}
-	
 	
 	// fixed it. there should be at most only one tile whose tile value increases by 1
 	// do boundary check as well
@@ -166,6 +150,13 @@ public class Board {
 		
 		// Can't capture hex
 		return 0;
+	}
+	
+	/** Return the possible moves
+	 * @return the number of possible Moves
+	 */
+	public int possibleMoves(){
+		return possibleMoves;
 	}
 	
 	/** Available cells for capture
