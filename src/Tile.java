@@ -1,21 +1,35 @@
 
+
 public class Tile {
-	public Point location;
+	
+	public static final int NOT_AVAILBLE = -1;
+	public static final int AVAILABLE = 0;
+	public static final int ONE_CAPTURE = 1;
+	public static final int TWO_CAPTURE = 2;
+	
 	public char type;
+	public int available;  
 	
-	public Tile(Point tileLocation, char typeOfTile){
+	public Tile(char typeOfTile){
 		type = typeOfTile;
-		location = tileLocation;
-	}
-	
-	public Point getTileLocation() {
-		return location;
+		available = Tile.NOT_AVAILBLE;
 	}
 	
 	public char getTileValue() {
 		return type;
 	}
 	
-	public int isAvailable(int boardSize) {
+	public void setTile(char type){
+		this.type = type;
 	}
+	
+	public int isAvailable() {
+		return available;
+	}
+	
+	public void setAvailable(int available){
+		this.available = available;
+	}
+	
+	
 }
