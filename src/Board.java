@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 public class Board {
 	public int n; // The N value
+	public int size; // The size of the board (4*n-1)
 	public Tile[][] board;
 	public int possibleMoves = 0; // Number of possible moves at this state
 	public int maxByOneMove = 0;  // Maximum number of hexagonal cells that can be captured by one move (0, 1, 2)
@@ -18,16 +19,18 @@ public class Board {
 		
 		try {
 			n = scan.nextInt();
+			size = 4*n-1;
 
-			board = new Tile[4*n-1][4*n-1];
+			board = new Tile[size][size];
 
-			for(int i = 0; i < 4*n-1; i++) {
-				for(int j = 0; j < 4*n-1; j++) {
+			for(int i = 0; i < size; i++) {
+				for(int j = 0; j < size; j++) {
+					board[i][j] = new Tile();
 					board[i][j].setCharValue(scan.next().charAt(0));
 				}
 			}
-		} catch (InputMismatchException e) {
-			System.err.println("ERROR: File doesn't follow correct syntax!");
+		} catch (InputMismatchException|NullPointerException e) {
+			System.err.println("ERROR: Exiting!");
 			System.exit(1);
 		}
 		
@@ -37,9 +40,9 @@ public class Board {
 	
 	public void printBoard(){
 		System.out.println(n);
-		for (int i = 0; i<4*n-1; i++){
-			for(int j = 0; j<4*n-1; j++){
-				System.out.print(board[i][j]+" ");
+		for (int i = 0; i<size; i++){
+			for(int j = 0; j<size; j++){
+				System.out.print(board[i][j].getCharValue()+" ");
 			}
 			System.out.println();
 		}

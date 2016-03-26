@@ -8,7 +8,7 @@ public class Tile {
 	public static final int TWO_CAPTURE = 2;
 	
 	public char charValue;
-	public int tileValue;  
+	public int tileValue;
 	
 	public Tile(){
 		tileValue = Tile.NOT_AVAILBLE;
