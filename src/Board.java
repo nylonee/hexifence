@@ -56,6 +56,7 @@ public class Board {
 		System.out.println();
 	}	
 	
+	
 	public int countPossibleMoves(){
 		
 		
@@ -67,47 +68,51 @@ public class Board {
 	
 	/** Determine the tile value of each tile in the board
 	 */
-	public void determineTileValue(){
+	public void determineTileValues(){
 		int i, j;
-		
-		
+		for (i = 0; i< 4*n-1; i+=2){
+			for(j =0; j< 4*n-1; j+=2){
+				if (board[i][j].getCharValue() != '-'){
+					determineTileValue(i, j);
+				}	
+			}
+		}
 	}
 	
 	
+	// fix it. there should be at most only one tile whose tile value increases by 1
+	// do boundary check as well
+	// if more than one + is detected stop it
 	public void determineTileValue(int i, int j){
-		boolean increase = true;
-		if (board[i][j].getCharValue() == '+'){
-			if(board[i+1][j].getCharValue() == '+'){
-				increase = false;
+		int numPlus = 0;
+		boolean isOutOfBound = false;
+		int[] iValues = {i, i+1, i, i+2, i+1, i+2};
+		int[] jValues = {j, j, j+1, j+1, j+2, j+2};
+		int k;
+		int iIncrease = 0, jIncrease = 0;
+		
+		for(k = 0; k<jValues.length; k++){
+			if (iValues[k] >= 4*n-1 || jValues[k] >= 4*n-1){
+				isOutOfBound = true;
+				break;
 			}
-			
-			if(board[i][j+1].getCharValue() == '+'){
-				increase = false;
+			if(board[iValues[k]][jValues[k]].getCharValue() == '+'){
+				iIncrease = iValues[k];
+				jIncrease = jValues[k];
+				numPlus++;
 			}
-			
-			if(board[i+2][j+1].getCharValue() == '+'){
-				increase = false;
+			if(numPlus > 1){
+				break;
 			}
-			
-			if(board[i+1][j+2].getCharValue() == '+'){
-				increase = false;
-			}
-			
-			if(board[i+2][j+2].getCharValue() == '+'){
-				increase = false;
-			}
-		}else{
-			increase = false;
 		}
 		
-		if (increase){
-			board[i][j].setTileValue(board[i][j].getTileValue()+1);
-			
-		}
-		
+		if (numPlus == 1 && !isOutOfBound){
+			board[iIncrease][jIncrease].setTileValue(board[iIncrease][jIncrease].getTileValue()+1);
+		}	
 	}
 	
 		
+	
 	/** Count available cells for capture
 	 * @return Number of hexagonal cells available for capture by a single move
 	 */
