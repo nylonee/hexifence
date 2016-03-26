@@ -61,8 +61,16 @@ public class Board {
 	
 	
 	public int countPossibleMoves(){
+		int i, j;
+		possibleMoves = 0;
 		
-		
+		for(i = 0; i< 4*n-1; i++){
+			for(j = 0; j< 4*n-1; j++){
+				if (board[i][j].getCharValue() == '+'){
+					possibleMoves++;
+				}
+			}
+		}
 		return possibleMoves;	
 	}
 	
