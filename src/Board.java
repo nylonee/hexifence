@@ -40,7 +40,6 @@ public class Board {
 				for(int j = 0; j < size; j++) {
 					board[i][j] = new Tile();
 					
-					//TODO: Check row length = 4*n-1
 					char value = line.charAt(j*2);
 
 					// any not allowed letters?(R,B,-,+)
