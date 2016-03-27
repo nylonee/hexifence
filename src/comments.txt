@@ -1,0 +1,12 @@
+#########################
+# Comments on hexifence #
+#########################
+by Tessa Song and Nihal Mirpuri
+
+# STRUCTURE OF CODE
+
+# LIBRARIES USED
+
+# PSEUDOCODE SUMMARY
+
+# TIME COMPLEXITY

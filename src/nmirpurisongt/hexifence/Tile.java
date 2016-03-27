@@ -1,3 +1,4 @@
+package nmirpurisongt.hexifence;
 /** Represents each character on a board
  * 
  */
