@@ -10,6 +10,8 @@ public class Board {
 	private int maxByOneMove = 0;  // Maximum number of hexagonal cells that can be captured by one move (0, 1, 2)
 	private int avlbCaptures = 0; // Number of hexagonal cells available for capture by a single move
 	
+	/** constructor 
+	 */
 	public Board(){
 		buildBoard();
 	}
@@ -75,6 +77,7 @@ public class Board {
 		printBoard();
 	}
 	
+	
 	/**
 	 * Print this board
 	 */
@@ -88,6 +91,7 @@ public class Board {
 		}
 		System.out.println();
 	}
+	
 	
 	/**
 	 * Given a tile point using i, j, returns true if the tile coordinate is valid
@@ -119,34 +123,52 @@ public class Board {
 		return true;
 	}
 
+	
 	/** Determine if a hex can be captured in a single move
 	 * Simultaneously uses the values to populate avlbCaptures
 	 */
 	public void determineCaptureValues(){
+		// pass the top left tile of each hexagonal cell
+		// to check if this cell can be captured by single move
 		for(int i=0; i<size; i+=2)
 			for(int j=0; j<size; j+=2)
+				// increase avlbCaptures if this cell is available for capture by single move 
 				avlbCaptures += determineCaptureValue(i, j);
 	}
 	
+	
+	
 	/** Determine if the given hexagon by x,y coordinate can be captured by single move or not
-	 * 
+	 *  and update capture value of the cell
 	 * @param i x coordinate of the hexagon
 	 * @param j y coordinate of the hexagon
 	 * @return  Returns 1 if hex can be captured, otherwise 0 (used for counter)
 	 */
 	public int determineCaptureValue(int i, int j){
+		// number or plus character in a cell
+		// there should be only one plus character within this cell to capture
 		int numPlus = 0;
+		
+		// boundary checking boolean variable
 		boolean isOutOfBound = false;
+		
+		// int Arrays which contain x,y coordinates of the 5 adjacent tiles 
 		int[] iValues = {i, i+1, i, i+2, i+1, i+2};
 		int[] jValues = {j, j, j+1, j+1, j+2, j+2};
+		
+		// x,y coordinate of a tile whose capture value will increase by 1
+		// if this cell can be captured by one move
 		int iIncrease = 0, jIncrease = 0;
 		
+		
 		for(int k=0; k<jValues.length && numPlus<=1; k++){
+			// check if this tile is within the available boundary or not
 			if(!checkTile(iValues[k], jValues[k])){
 				isOutOfBound = true;
 				break;
 			}
 
+			// find out the tile whose char value is '+'
 			if(board[iValues[k]][jValues[k]].getCharValue() == '+'){
 				iIncrease = iValues[k];
 				jIncrease = jValues[k];
@@ -154,6 +176,8 @@ public class Board {
 			}
 		}
 		
+		// if there is only one plus '+' character and within boundary 
+		// increase the capture value of the '+' tile object
 		if (numPlus == 1 && !isOutOfBound){
 			board[iIncrease][jIncrease].setCaptureValue(board[iIncrease][jIncrease].getCaptureValue()+1);
 			
@@ -169,12 +193,14 @@ public class Board {
 		return 0;
 	}
 	
+	
 	/** Return the possible moves
 	 * @return the number of possible Moves
 	 */
 	public int getPossibleMoves(){
 		return possibleMoves;
 	}
+	
 	
 	/** Available cells for capture
 	 * @return Number of hexagonal cells available for capture by a single move
@@ -183,6 +209,7 @@ public class Board {
 		return avlbCaptures;
 	}
 	
+	
 	/** Maximum number of cells which can be captured by one move
 	 * @return maximum number of hexagonal cells which can be captured by one move
 	 */
@@ -190,3 +217,6 @@ public class Board {
 		return maxByOneMove;
 	}
 }
+
+
+
