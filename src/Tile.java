@@ -1,34 +1,36 @@
-
-
+/** Represents each character on a board
+ * 
+ */
 public class Tile {
 	
-	public static final int ZERO_CAPTURE = 0;
-	public static final int ONE_CAPTURE = 1;
-	public static final int TWO_CAPTURE = 2;
+	// Character value of this tile (+,-,R or B)	
+	public char charValue; 
+	// Represents how many cells can be captured by making move on this tile (0,1 or 2) 
+	public int captureValue; 
 	
-	public char charValue;
-	public int captureValue;
-	
+	// CaptureValue is initialized as 0 at first
 	public Tile(){
-		captureValue = Tile.ZERO_CAPTURE;
+		captureValue = 0;
 	}
-
+	
+	// getter for captureValue
 	public int getCaptureValue() {
 		return captureValue;
 	}
 
+	// setter for captureValue
 	public void setCaptureValue(int captureValue) {
 		this.captureValue = captureValue;
 	}
 
+	// getter for CharValue
 	public char getCharValue() {
 		return charValue;
 	}
 
+	// setter for CharValue
 	public void setCharValue(char charValue) {
 		this.charValue = charValue;
 	}
 
-
-	
 }
