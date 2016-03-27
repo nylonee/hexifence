@@ -23,14 +23,22 @@ public class Board {
 			n = scan.nextInt();
 			size = 4*n-1;
 
-			board = new Tile[size][size];
+			// Go to the next line
+			scan.nextLine();
 
+			board = new Tile[size][size];
 			for(int i = 0; i < size; i++) {
+				String line = scan.nextLine();
+				
+				// Check line length is accurate
+				if(line.length() != (size*2-1))
+					throw new IllegalArgumentException();
+				
 				for(int j = 0; j < size; j++) {
 					board[i][j] = new Tile();
 					
 					//TODO: Check row and column length = 4*n-1
-					char value = scan.next().charAt(0);
+					char value = line.charAt(j*2);
 
 					// any not allowed letters?(R,B,-,+)
 					if (value != 'R' && value != 'B' && value != '-' && value != '+')
