@@ -3,12 +3,12 @@ import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class Board {
-	public int n; // The N value
-	public int size; // The size of the board (4*n-1)
-	public Tile[][] board;
-	public int possibleMoves = 0; // Number of possible moves at this state
-	public int maxByOneMove = 0;  // Maximum number of hexagonal cells that can be captured by one move (0, 1, 2)
-	public int avlbCaptures = 0; // Number of hexagonal cells available for capture by a single move
+	private int n; // The N value
+	private int size; // The size of the board (4*n-1)
+	private Tile[][] board;
+	private int possibleMoves = 0; // Number of possible moves at this state
+	private int maxByOneMove = 0;  // Maximum number of hexagonal cells that can be captured by one move (0, 1, 2)
+	private int avlbCaptures = 0; // Number of hexagonal cells available for capture by a single move
 	
 	public Board(){
 		buildBoard();
@@ -128,10 +128,12 @@ public class Board {
 				avlbCaptures += determineCaptureValue(i, j);
 	}
 	
-	// fixed it. there should be at most only one tile whose tile value increases by 1
-	// do boundary check as well
-	// if more than one + is detected stop it
-	// Returns 1 if hex can be captured, otherwise 0 (used for counter)
+	/** Determine if the given hexagon by x,y coordinate can be captured by single move or not
+	 * 
+	 * @param i x coordinate of the hexagon
+	 * @param j y coordinate of the hexagon
+	 * @return  Returns 1 if hex can be captured, otherwise 0 (used for counter)
+	 */
 	public int determineCaptureValue(int i, int j){
 		int numPlus = 0;
 		boolean isOutOfBound = false;
@@ -170,21 +172,21 @@ public class Board {
 	/** Return the possible moves
 	 * @return the number of possible Moves
 	 */
-	public int possibleMoves(){
+	public int getPossibleMoves(){
 		return possibleMoves;
 	}
 	
 	/** Available cells for capture
 	 * @return Number of hexagonal cells available for capture by a single move
 	 */
-	public int availableCaptures(){
+	public int getAvailableCaptures(){
 		return avlbCaptures;
 	}
 	
 	/** Maximum number of cells which can be captured by one move
 	 * @return maximum number of hexagonal cells which can be captured by one move
 	 */
-	public int maxByOneMove(){
+	public int getMaxByOneMove(){
 		return maxByOneMove;
 	}
 }
