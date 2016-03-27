@@ -1,7 +1,11 @@
 package nmirpurisongt.hexifence;
 /** Represents each character on a board
  * 
+ * @author Nihal Mirpuri
+ * @author Tessa Song
+ * @version 1.0
  */
+
 public class Tile {
 	
 	// Character value of this tile (+,-,R or B)	

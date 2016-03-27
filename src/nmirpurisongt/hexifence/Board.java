@@ -1,5 +1,11 @@
 package nmirpurisongt.hexifence;
-import java.util.InputMismatchException;
+/** Board class for holding a 'snapshot' of a board
+ *
+ * @author Nihal Mirpuri
+ * @author Tessa Song
+ * @version 1.0
+ */
+
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
@@ -68,13 +74,6 @@ public class Board {
 		scan.close();
 		
 		determineCaptureValues();
-		
-		// By this point, the following have been initialized
-		// for this instance of Board:
-		// Tile board[][] (Each Tile object has charValue and captureValue)
-		// int n, size, possibleMoves, maxByOneMove, avlbCaptures
-		
-		printBoard();
 	}
 	
 	

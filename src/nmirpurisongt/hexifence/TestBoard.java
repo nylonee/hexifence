@@ -1,8 +1,11 @@
+package nmirpurisongt.hexifence;
 /** TestBoard class which makes use of Board class
  *  by creating an instance of it and calling proper functions
  *
+ * @author Nihal Mirpuri
+ * @author Tessa Song
+ * @version 1.0
  */
-package nmirpurisongt.hexifence;
 
 public class TestBoard {
 	public static void main(String[] args){
