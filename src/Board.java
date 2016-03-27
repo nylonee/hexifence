@@ -1,4 +1,5 @@
 import java.util.InputMismatchException;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class Board {
@@ -32,12 +33,14 @@ public class Board {
 				
 				// Check line length is accurate
 				if(line.length() != (size*2-1))
-					throw new IllegalArgumentException();
+					// If not, check if the last char in the line is a space
+					if(!(line.length() == (size*2) && line.charAt(size*2-1)==' '))
+						throw new IllegalArgumentException();
 				
 				for(int j = 0; j < size; j++) {
 					board[i][j] = new Tile();
 					
-					//TODO: Check row and column length = 4*n-1
+					//TODO: Check row length = 4*n-1
 					char value = line.charAt(j*2);
 
 					// any not allowed letters?(R,B,-,+)
@@ -51,7 +54,11 @@ public class Board {
 						possibleMoves++;
 				}
 			}
-		} catch (InputMismatchException|IllegalArgumentException e) {
+			
+			// If there are left over lines, throw an error!
+			if(scan.hasNext())
+				throw new IllegalArgumentException();
+		} catch (IllegalArgumentException|NoSuchElementException e) {
 			System.err.println("SYNTAX ERROR: Exiting!");
 			System.exit(1);
 		}
