@@ -1,7 +1,7 @@
 package nmirpurisongt.hexifence;
 /** Represents each character on a board
  * 
- * @author Nihal Mirpuri
+ * @author Nihal Mirpuri (nmirpuri)
  * @author Tessa Song (songt)
  * @version 1.0
  */
@@ -9,9 +9,9 @@ package nmirpurisongt.hexifence;
 public class Tile {
 	
 	// Character value of this tile (+,-,R or B)	
-	public char charValue; 
+	private char charValue; 
 	// Represents how many cells can be captured by making move on this tile (0,1 or 2) 
-	public int captureValue; 
+	private int captureValue; 
 	
 	// CaptureValue is initialized as 0 at first
 	public Tile(){
