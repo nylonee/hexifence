@@ -2,7 +2,7 @@ package nmirpurisongt.hexifence;
 /** Represents each character on a board
  * 
  * @author Nihal Mirpuri
- * @author Tessa Song
+ * @author Tessa Song (songt)
  * @version 1.0
  */
 

@@ -2,7 +2,7 @@ package nmirpurisongt.hexifence;
 /** Board class for holding a 'snapshot' of a board
  *
  * @author Nihal Mirpuri
- * @author Tessa Song
+ * @author Tessa Song (songt)
  * @version 1.0
  */
 

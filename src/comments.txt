@@ -1,7 +1,7 @@
 #########################
 # Comments on hexifence #
 #########################
-by Tessa Song and Nihal Mirpuri
+by Tessa Song (songt) and Nihal Mirpuri (nmirpuri)
 
 # STRUCTURE OF CODE
 TestBoard: The main class that initializes a Board class, 
@@ -19,6 +19,8 @@ of hexes that can be captured by capturing this Tile
 No external libraries were used in this program
 
 # PSEUDOCODE SUMMARY
+
+
 
 # TIME COMPLEXITY
 
