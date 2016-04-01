@@ -1,9 +1,9 @@
-#########################
-# Comments on hexifence #
-#########################
-by Tessa Song (songt) and Nihal Mirpuri (nmirpuri)
 
-# STRUCTURE OF CODE
+Comments on hexifence
+   by Tessa Song (songt) and Nihal Mirpuri (nmirpuri)
+
+
+• STRUCTURE OF CODE
 TestBoard: The main class that initializes a Board class, 
 and outputs the required values for assessment
 
@@ -15,10 +15,12 @@ Tile: A single 'tile' on the board, holds information about
 what kind of tile it is (eg. R, B, + or -) and the number
 of hexes that can be captured by capturing this Tile
 
-# LIBRARIES USED
+
+• LIBRARIES USED
 No external libraries were used in this program
 
-# PSEUDOCODE SUMMARY
+
+• PSEUDOCODE SUMMARY
 The major task of this project is returning three values,
 which are the number of possible moves, maximum number of hexagonal cells
 that can be captured by one move and number of hexagonal cells 
@@ -47,8 +49,7 @@ Moreover, the tile boundary checking function is called every time to make
 this algorithm more concrete.  
 
 
-# TIME COMPLEXITY
-
+• TIME COMPLEXITY
 The Big-O for initializing a Board class is O(34n^2)
 where n is the length of a side of the Hexifence (2 or 3)
 All functions after the initialization takes constant time O(1).
