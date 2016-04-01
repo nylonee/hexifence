@@ -19,7 +19,32 @@ of hexes that can be captured by capturing this Tile
 No external libraries were used in this program
 
 # PSEUDOCODE SUMMARY
+The major task of this project is returning three values,
+which are the number of possible moves, maximum number of hexagonal cells
+that can be captured by one move and number of hexagonal cells 
+available for capture by a single move.
 
+The first one was easiest one which we have solved by counting '+' 
+characters on the board.
+
+When it comes to the second and the third one, we come up with an
+idea to make use of capture value of each Tile, which represents 
+the number of hexagon that can be captured by making move on the tile (0,1 or 2).
+
+With these capture values calculated for all the tiles, the second and the third
+tasks get easy. For the second task, we can just add all the capture values up and
+for the third task we just need to pick up the maximum capture value.
+
+Therefore, the principle part is calculating capture value for each tile.
+
+In order to do that, every top left tile of each hexagon is passed to 
+the function which implements our algorithm. The job of the algorithm is
+checking the 5 adjacent tiles on the basis of the targeted tile and figuring out
+if there is only one '+' tile among them and the rest of them are either R or B.
+If it is, it means that the hexagon is available for capture by one move and 
+it simply increases the capture value of the '+' tile by one.
+Moreover, the tile boundary checking function is called every time to make
+this algorithm more concrete.  
 
 
 # TIME COMPLEXITY
