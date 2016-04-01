@@ -1,7 +1,7 @@
 package nmirpurisongt.hexifence;
 /** Board class for holding a 'snapshot' of a board
  *
- * @author Nihal Mirpuri
+ * @author Nihal Mirpuri (nmirpuri)
  * @author Tessa Song (songt)
  * @version 1.0
  */
@@ -10,9 +10,9 @@ import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class Board {
-	private int n; // The N value
+	private int n; // The N value (either 2 or 3)
 	private int size; // The size of the board (4*n-1)
-	private Tile[][] board;
+	private Tile[][] board; // Represents the entire board
 	private int possibleMoves = 0; // Number of possible moves at this state
 	private int maxByOneMove = 0;  // Maximum number of hexagonal cells that can be captured by one move (0, 1, 2)
 	private int avlbCaptures = 0; // Number of hexagonal cells available for capture by a single move
@@ -24,7 +24,11 @@ public class Board {
 	}
 	
 	/** Build a board by scanning the given input
-	 * 
+	 *  and filling the board.
+	 *  Count possibleMoves concurrently.
+	 *  After that, call determineCaptureValues() to determine 
+	 *  the captureValue of each tile and calculate maxBayOneMove 
+	 *  and avlbCaptures.
 	 */
 	public void buildBoard(){
 		Scanner scan = new Scanner(System.in);
@@ -123,7 +127,7 @@ public class Board {
 	}
 
 	
-	/** Determine if a hex can be captured in a single move
+	/** Determine captureValue of each tile on the board.
 	 * Simultaneously uses the values to populate avlbCaptures
 	 */
 	public void determineCaptureValues(){
@@ -138,14 +142,15 @@ public class Board {
 	
 	
 	/** Determine if the given hexagon by x,y coordinate can be captured by single move or not
-	 *  and update capture value of the cell
+	 *  and increase the capture value of the available tile by 1
+	 *  MaxByOneMove is updated every time this function is called
 	 * @param i x coordinate of the hexagon
 	 * @param j y coordinate of the hexagon
 	 * @return  Returns 1 if hex can be captured, otherwise 0 (used for counter)
 	 */
 	public int determineCaptureValue(int i, int j){
-		// number or plus character in a cell
-		// there should be only one plus character within this cell to capture
+		// number or plus character in the corresponding hex cell to the given Tile
+		// there should be only one plus character within this cell to capture it
 		int numPlus = 0;
 		
 		// boundary checking boolean variable
@@ -201,7 +206,7 @@ public class Board {
 	}
 	
 	
-	/** Available cells for capture
+	/** Return available cells for capture
 	 * @return Number of hexagonal cells available for capture by a single move
 	 */
 	public int getAvailableCaptures(){
@@ -209,7 +214,7 @@ public class Board {
 	}
 	
 	
-	/** Maximum number of cells which can be captured by one move
+	/** Return maximum number of cells which can be captured by one move
 	 * @return maximum number of hexagonal cells which can be captured by one move
 	 */
 	public int getMaxByOneMove(){
