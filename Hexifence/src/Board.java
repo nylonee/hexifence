@@ -133,7 +133,7 @@ public class Board {
 		// pass the top left tile of each hexagonal cell
 		// to check if this cell can be captured by single move
 		for(int i=0; i<size; i+=2)
-			for(int j=0; j<size && checkTile(i, j); j+=2)
+			for(int j=0; j<size ; j+=2)
 				// increase avlbCaptures if this cell is available for capture by single move 
 				avlbCaptures += determineCaptureValue(i, j);
 	}
