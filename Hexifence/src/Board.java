@@ -5,93 +5,63 @@
  * @version 1.0
  */
 
+import java.io.PrintStream;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
+import aiproj.hexifence.*;
 
 public class Board {
 	private int n; // The N value (either 2 or 3)
-	private int size; // The size of the board (4*n-1)
-	private Tile[][] board; // Represents the entire board
+	public int size; // The size of the board (4*n-1)
+	public Tile[][] board; // Represents the entire board
 	private int possibleMoves = 0; // Number of possible moves at this state
 	private int maxByOneMove = 0;  // Maximum number of hexagonal cells that can be captured by one move (0, 1, 2)
 	private int avlbCaptures = 0; // Number of hexagonal cells available for capture by a single move
+
+	public int blueHex = 0; // Number of hexagons captured by blue player
+	public int redHex = 0; // Number of hexagons captured by red player
 	
 	/** constructor 
 	 */
-	public Board(){
+	public Board(int n){
+		this.n = n;
+		this.size = 4*n-1;
 		buildBoard();
 	}
 	
-	/** Build a board by scanning the given input
-	 *  and filling the board.
-	 *  Count possibleMoves concurrently.
-	 *  After that, call determineCaptureValues() to determine 
-	 *  the captureValue of each tile and calculate maxBayOneMove 
-	 *  and avlbCaptures.
+	/** Build a board by filling it with + and -
 	 */
 	public void buildBoard(){
-		Scanner scan = new Scanner(System.in);
 		
-		try {
-			n = scan.nextInt();
-			size = 4*n-1;
-
-			// Go to the next line
-			scan.nextLine();
-
-			board = new Tile[size][size];
-			for(int i = 0; i < size; i++) {
-				String line = scan.nextLine();
-				
-				// Check line length is accurate
-				if(line.length() != (size*2-1))
-					// If not, check if the last char in the line is a space
-					if(!(line.length() == (size*2) && line.charAt(size*2-1)==' '))
-						throw new IllegalArgumentException();
-				
-				for(int j = 0; j < size; j++) {
-					board[i][j] = new Tile();
-					
-					char value = line.charAt(j*2);
-
-					// any not allowed letters?(R,B,-,+)
-					if (value != 'R' && value != 'B' && value != '-' && value != '+')
-						throw new IllegalArgumentException();
-					
-					board[i][j].setCharValue(value);
-					
-					// Populate the total @possibleMoves int
-					if (value == '+')
-						possibleMoves++;
+		// create board object
+		board = new Tile[size][size];
+		
+		// fill the board with either + or -
+		for(int i = 0; i<size ; i++){
+			for(int j = 0; j<size ; j++){
+				Tile temp = new Tile();
+				if(checkTile(i, j)){
+					temp.setCharValue('+');
+				}else{
+					temp.setCharValue('-');
 				}
+				board[i][j] = temp;
 			}
-			
-			// If there are left over lines, throw an error!
-			if(scan.hasNext())
-				throw new IllegalArgumentException();
-		} catch (IllegalArgumentException|NoSuchElementException e) {
-			System.err.println("SYNTAX ERROR: Exiting!");
-			System.exit(1);
 		}
-		
-		scan.close();
-		
-		determineCaptureValues();
 	}
 	
 	
 	/**
 	 * Print this board
 	 */
-	public void printBoard(){
-		System.out.println(n);
+	public void printBoard(PrintStream output){
 		for(int i = 0; i<size; i++){
 			for(int j = 0; j<size; j++){
-				System.out.print(board[i][j].getCharValue()+" ");
+				output.print(board[i][j].getCharValue()+" ");
 			}
-			System.out.println();
+			output.println();
 		}
-		System.out.println();
+		output.println();
 	}
 	
 	
@@ -111,12 +81,12 @@ public class Board {
 		// Note: Center of hexagons only occur on odd i, j
 		if (i%2==1 && j%2==1)
 			return false;
-		
+			
 		// Check for game boundary
 		// If j < 2n-1, then for tile to be valid i <= (2n-1)+j
 		// If j > 2n-1, then for tile to be valid i >= j-(2n-1)
 		// If j = 2n-1, then tile is valid
-		int boundary = 2*n-1;
+		int boundary = 2*n-1;	
 		if(!((j < boundary && i <= boundary+j)
 				||(j > boundary && i >= j-boundary)
 				||(j == boundary)))
@@ -126,10 +96,24 @@ public class Board {
 	}
 
 	
+	/** initialise capture value of all tiles as 0
+	*/
+	public void initialiseCaptureValue(){
+		for(int i = 0 ;i<size ; i++){
+			for(int j = 0;j<size; j++){
+				board[i][j].setCaptureValue(0);
+			}
+		}
+
+	}
+
 	/** Determine captureValue of each tile on the board.
 	 * Simultaneously uses the values to populate avlbCaptures
 	 */
 	public void determineCaptureValues(){
+		// initialise capture values as 0 first
+		initialiseCaptureValue();
+
 		// pass the top left tile of each hexagonal cell
 		// to check if this cell can be captured by single move
 		for(int i=0; i<size; i+=2)
@@ -197,10 +181,115 @@ public class Board {
 	}
 	
 	
+	/** Update this board by applying the newly-made move
+	 *  If there is any hexagon captured by this move, put either r or b 
+	 *  at the centre tile 
+	 * @param Move move
+	 * @return 1 if there is any hexagon captured by this move
+	 * 			 otherwise, return 0 
+	 */
+	public int setBoard(Move move, int p){
+		int hexCapted; // number of hexagons captured by this move
+		int counter;
+
+		// make move
+		if(p == Piece.BLUE)
+			board[move.Row][move.Col].setCharValue('B');
+		else
+			board[move.Row][move.Col].setCharValue('R');
+		
+		// check how many hexagons are captured by this move
+		hexCapted = board[move.Row][move.Col].getCaptureValue();
+		counter = hexCapted;
+
+		// put either b or r at the centre of the hexagons captured
+		if (hexCapted > 0) {
+			outerloop:
+			for(int i = 0; i<size; i+=2){
+				for(int j= 0; j<size; j+=2){
+					// decrease counter by 1 if this cell has been captured
+					if(checkTile(i,j)){
+						counter -= isCaptured(i, j, p);
+					}
+					// if there is no cell to capture for this move anymore, break
+					if (counter == 0)
+						break outerloop;
+				}
+			}
+		}
+	
+		// update capture values of tiles
+		determineCaptureValues();
+		
+		// return value
+		if (hexCapted > 0)
+			return 1;
+		else
+			return 0;
+					
+
+	}
+	
+	
+	/**
+	 * check if this hexagon has been captured
+	 *  if captured, put either 'r' or 'b' at the centre tile 
+	 * @return 1 if captured
+	 * 		   otherwise, 0
+	 */
+	public int isCaptured(int i, int j, int p){
+		int captured = 1;
+		
+		// int Arrays which contain x,y coordinates of the 5 adjacent tiles 
+		int[] iValues = {i, i+1, i, i+2, i+1, i+2};
+		int[] jValues = {j, j, j+1, j+1, j+2, j+2};
+		
+		// check if this cell has been captured
+		for(int k = 0; k < jValues.length; k++){
+			if( !checkTile(iValues[k], jValues[k]) ||
+				board[iValues[k]][jValues[k]].getCharValue() == '+' ){
+				captured = 0;
+				break;
+			}
+		}
+
+		// if this has been already captured before,
+		if(captured == 1 && board[i+1][j+1].getCharValue() != '-' ){
+			captured = 0;
+
+		}
+
+		
+		// if capture, set character of the centre tile as either 'b' or 'r'
+		if(captured == 1){
+			if(p == Piece.BLUE){
+				board[i+1][j+1].setCharValue('b');
+				blueHex++;
+			}
+			else{
+				board[i+1][j+1].setCharValue('r');
+				redHex++;
+			}
+		}
+
+		return captured;
+	}
+	
+	
+	
 	/** Return the possible moves
 	 * @return the number of possible Moves
 	 */
 	public int getPossibleMoves(){
+		possibleMoves = 0;
+		for(int i = 0; i<size; i++){
+			for(int j = 0; j<size; j++){
+				if (board[i][j].getCharValue() == '+'){
+					possibleMoves++;
+				}
+			}
+		}
+
 		return possibleMoves;
 	}
 	
@@ -220,6 +309,4 @@ public class Board {
 		return maxByOneMove;
 	}
 }
-
-
 
