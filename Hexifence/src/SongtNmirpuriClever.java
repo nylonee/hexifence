@@ -34,7 +34,7 @@ public class SongtNmirpuriClever implements Player, Piece {
 		int maxIndex = 0;
 		int idx = 0;
 		
-		// built a Move array which contains all possible moves for the current state		
+		// build a Move array which contains all possible moves for the current state		
 		// and find out the minimax value of it
 		outerloop:
 		for(int i = 0; i<gameBoard.size; i++){
@@ -45,14 +45,14 @@ public class SongtNmirpuriClever implements Player, Piece {
 					move.Col = j;
 					move.P = piece;
 					moveArray[idx] = move;
-					idx++;
 					
-					// copy the current board and make the possible move
+					// copy the current board and make this possible move
 					Board board = new Board(gameBoard);
-					board.setBoard(move, piece);
+					board.setBoard(move);
 					
 					// find out the minimax value of this move
 					valueArray[idx] = miniMaxValue(board);
+					idx++;
 				}
 				
 				// if we find out all possible move positions, break the loop
@@ -79,7 +79,9 @@ public class SongtNmirpuriClever implements Player, Piece {
 	 */
 	public int miniMaxValue(Board board){
 		int value = 0;
-		
+		Random rand = new Random();
+		value = rand.nextInt(gameBoard.size);
+
 		return value;
 		
 	}
@@ -93,6 +95,7 @@ public class SongtNmirpuriClever implements Player, Piece {
 		// using miniMax search tree find out the next move
 		move = miniMaxDecision();
 		move.P = piece;
+		gameBoard.setBoard(move);
 		
 		// return the Move object so that the opponent can update their board config
 		return move;
@@ -106,10 +109,7 @@ public class SongtNmirpuriClever implements Player, Piece {
 			return boardState;
 		}
 		// update the board by this move
-		if(this.piece == Piece.BLUE)
-			return gameBoard.setBoard(m, Piece.RED);
-		else
-			return gameBoard.setBoard(m, Piece.BLUE);		
+		return gameBoard.setBoard(m);		
 	}
 
 	

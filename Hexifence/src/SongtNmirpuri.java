@@ -40,7 +40,7 @@ public class SongtNmirpuri implements Player, Piece {
 			if(gameBoard.board[row][col].getCharValue() == '+'){
 				move.Row = row;
 				move.Col = col;
-				gameBoard.setBoard(move, piece);
+				gameBoard.setBoard(move);
 				moveMade = true;
 			}
 		}
@@ -56,11 +56,8 @@ public class SongtNmirpuri implements Player, Piece {
 			boardState = Piece.INVALID;
 			return boardState;
 		}
-		// update the board by this move
-		if(this.piece == Piece.BLUE)
-			return gameBoard.setBoard(m, Piece.RED);
-		else
-			return gameBoard.setBoard(m, Piece.BLUE);		
+
+		return gameBoard.setBoard(m);		
 	}
 
 	
@@ -74,7 +71,7 @@ public class SongtNmirpuri implements Player, Piece {
 		// if the game has not finished
 		if(gameBoard.getPossibleMoves() > 0)
 			return Piece.EMPTY;
-		
+
 		// if red wins
 		if(gameBoard.redHex > gameBoard.blueHex)
 			return Piece.RED;

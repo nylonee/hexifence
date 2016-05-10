@@ -36,6 +36,9 @@ public class Board {
 	public Board(Board source){
 		this.n = source.n;
 		this.size = source.size;
+
+		// create board object
+		board = new Tile[size][size];
 		
 		// copy the tiles in board
 		for(int i = 0;i<size; i++){
@@ -215,12 +218,12 @@ public class Board {
 	 * @return 1 if there is any hexagon captured by this move
 	 * 			 otherwise, return 0 
 	 */
-	public int setBoard(Move move, int p){
+	public int setBoard(Move move){
 		int hexCapted; // number of hexagons captured by this move
 		int counter;
 
 		// make move
-		if(p == Piece.BLUE)
+		if(move.P == Piece.BLUE)
 			board[move.Row][move.Col].setCharValue('B');
 		else
 			board[move.Row][move.Col].setCharValue('R');
@@ -236,7 +239,7 @@ public class Board {
 				for(int j= 0; j<size; j+=2){
 					// decrease counter by 1 if this cell has been captured
 					if(checkTile(i,j)){
-						counter -= isCaptured(i, j, p);
+						counter -= isCaptured(i, j, move.P);
 					}
 					// if there is no cell to capture for this move anymore, break
 					if (counter == 0)
