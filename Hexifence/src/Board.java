@@ -11,7 +11,7 @@ import java.util.Scanner;
 import aiproj.hexifence.*;
 
 public class Board {
-	private int n; // The N value (either 2 or 3)
+	public int n; // The N value (either 2 or 3)
 	public int size; // The size of the board (4*n-1)
 	public Tile[][] board; // Represents the entire board
 	private int possibleMoves = 0; // Number of possible moves at this state
@@ -27,6 +27,34 @@ public class Board {
 		this.n = n;
 		this.size = 4*n-1;
 		buildBoard();
+	}
+	
+	/**
+	 * copy constructor
+	 * make a deep copy of the given source 
+	 */
+	public Board(Board source){
+		this.n = source.n;
+		this.size = source.size;
+		
+		// copy the tiles in board
+		for(int i = 0;i<size; i++){
+			for(int j = 0; j<size; j++){
+				Tile temp = new Tile();
+				temp.setCaptureValue(source.board[i][j].getCaptureValue());
+				temp.setCharValue(source.board[i][j].getCharValue());
+				board[i][j] = temp;
+				
+			}
+		}
+		
+		// copy the rest of attributes
+		possibleMoves = source.possibleMoves;
+		maxByOneMove = source.maxByOneMove;
+		avlbCaptures = source.avlbCaptures;
+		blueHex = source.blueHex;
+		redHex = source.redHex;
+		
 	}
 	
 	/** Build a board by filling it with + and -
@@ -49,7 +77,6 @@ public class Board {
 			}
 		}
 	}
-	
 	
 	/**
 	 * Print this board
