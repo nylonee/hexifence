@@ -7,12 +7,10 @@ public class SongtNmirpuriClever implements Player, Piece {
 	
 	public Board gameBoard; // the board to put pieces on
 	public int piece; // either BLUE(1) or RED(2) 
-	
-	
 	// represent the state of this board
-	// this should be updated on every newly-made move
 	public int boardState = Piece.EMPTY; 
 
+	
 	@Override
 	public int init(int n, int p) {
 		try{
@@ -27,7 +25,7 @@ public class SongtNmirpuriClever implements Player, Piece {
 	
 	/**
 	 * return the next move to make using minimax Search tree
-	 * @return Move the next move
+	 * @return Move : the next move
 	 */
 	public Move miniMaxDecision(){
 		int possibleMoves = gameBoard.getPossibleMoves();
