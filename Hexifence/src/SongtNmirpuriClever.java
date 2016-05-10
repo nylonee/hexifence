@@ -15,7 +15,7 @@ import java.util.Random;
 import aiproj.hexifence.*;
 
 public class SongtNmirpuriClever implements Player, Piece {
-	public static final int LIMIT_DEPTH = 3;
+	public static final int LIMIT_DEPTH = 6;
 	public static final int MAXINT =  Integer.MAX_VALUE / 2;
 	public static final int MININT =  Integer.MIN_VALUE / 2;
 	public static final int MYTURN =  1;
