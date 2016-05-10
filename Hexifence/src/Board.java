@@ -5,6 +5,7 @@
  * @version 1.0
  */
 
+import java.util.*;
 import java.io.PrintStream;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
@@ -309,12 +310,16 @@ public class Board {
 
 	/**
 	 * return all possible moves from the current state
-	 * @param board
-	 * @param p piece, either BLUE or RED
 	 * @return array of Moves
 	 */
-	public Move[] generatePosbMoves(int p){
-		Move[] moveArr = new Move[getPossibleMoves()];
+	public List<Move> generatePosbMoves(){
+		List<Move> posbMoves = new ArrayList<Move>(); // allocate List
+		 
+	    // If gameover, i.e., no possible move
+	    if (getPossibleMoves() == 0) {
+	         return posbMoves;   // return empty list
+	    }
+	    
 		int idx = 0;
 		for(int i = 0; i<size; i++){
 			for(int j = 0; j<size; j++){
@@ -322,8 +327,8 @@ public class Board {
 					Move move = new Move();
 					move.Row = i;
 					move.Col = j;
-					move.P = p;
-					moveArr[idx] = move;
+					//move.P = p;
+					posbMoves.add(move);
 					idx++;
 				}
 				
@@ -334,7 +339,7 @@ public class Board {
 			}
 		}
 		
-		return moveArr;
+		return posbMoves;
 		
 	}
 	
