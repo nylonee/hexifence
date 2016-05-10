@@ -3,7 +3,11 @@
  * @author Nihal Mirpuri (nmirpuri)
  * @author Tessa Song (songt)
  * @version 1.0
+ * 
+ *  Attribution : https://www.ntu.edu.sg/home/ehchua/programming/java/JavaGame_TicTacToe_AI.html
  */
+
+// probably can create hex cell and make use of it in undoMove and setBoard
 
 import java.util.*;
 import java.io.PrintStream;
@@ -13,6 +17,7 @@ import java.util.Scanner;
 import aiproj.hexifence.*;
 
 public class Board {
+	public static final int UNDO = -1;
 	public int n; // The N value (either 2 or 3)
 	public int size; // The size of the board (4*n-1)
 	public Tile[][] board; // Represents the entire board
@@ -213,6 +218,59 @@ public class Board {
 	}
 	
 	
+	/**
+	 * Undo the given move from the board
+	 * @param move
+	 */
+	public void undoMove(Move move){
+		// set the character as '+'
+		board[move.Row][move.Col].setCharValue('+');
+		
+		// update capture values
+		determineCaptureValues();
+		
+		// get the updated capture value
+		int hexCapted = board[move.Row][move.Col].getCaptureValue();
+		int counter = hexCapted;
+		
+		// retrieve hexs that captured before by undoing this move
+		if (hexCapted > 0){
+			outerloop:
+			for(int i = 0; i<size; i+=2){
+				for(int j = 0; j<size; j+=2){
+					if(isCaptured(i, j, move.P) == UNDO){
+						char ch = board[move.Row][move.Col].getCharValue();
+						
+						// decreased the number of captured cell
+						if(ch == 'b')
+							blueHex--;
+						else
+							redHex--;
+						
+						// update character as '-'
+						board[move.Row][move.Col].setCharValue('-');
+						
+						counter--;
+						
+					}
+					
+					if(counter <= 0)
+						break outerloop;
+						
+				}
+			}
+		}
+		
+		// update possible moves
+		getPossibleMoves();
+		
+		
+		
+		
+	}
+	
+	
+	
 	/** Update this board by applying the newly-made move
 	 *  If there is any hexagon captured by this move, put either r or b 
 	 *  at the centre tile 
@@ -253,6 +311,9 @@ public class Board {
 		// update capture values of tiles
 		determineCaptureValues();
 		
+		// update possible moves
+		getPossibleMoves();
+		
 		// return value
 		if (hexCapted > 0)
 			return 1;
@@ -268,6 +329,9 @@ public class Board {
 	 *  if captured, put either 'r' or 'b' at the centre tile 
 	 * @return 1 if captured
 	 * 		   otherwise, 0
+	 * if the cell is not supposed to be captured but the centre char is not '-'
+	 * return UNDO. This is used for undoMove()
+	 * 
 	 */
 	public int isCaptured(int i, int j, int p){
 		int captured = 1;
@@ -284,21 +348,25 @@ public class Board {
 				break;
 			}
 		}
-
+		
+		// used for undoMove()
+		if(captured == 0 && board[i+j][j+1].getCharValue() != '-'){
+			return UNDO;
+		}
+		
 		// if this has been already captured before,
 		if(captured == 1 && board[i+1][j+1].getCharValue() != '-' ){
 			captured = 0;
-
 		}
-
 		
-		// if capture, set character of the centre tile as either 'b' or 'r'
+		
+		// if captured, set character of the centre tile as either 'b' or 'r'
 		if(captured == 1){
 			if(p == Piece.BLUE){
 				board[i+1][j+1].setCharValue('b');
 				blueHex++;
 			}
-			else{
+			else if(p == Piece.RED){
 				board[i+1][j+1].setCharValue('r');
 				redHex++;
 			}
