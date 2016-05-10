@@ -1,10 +1,25 @@
+/**
+ *
+ * @author Nihal Mirpuri (nmirpuri)
+ * @author Tessa Song (songt)
+ * @version 1.0
+ * 
+ *  Attribution : https://www.ntu.edu.sg/home/ehchua/programming/java/JavaGame_TicTacToe_AI.html
+ */
+
+
 import java.io.PrintStream;
+import java.util.*;
 import java.util.Random;
 
 import aiproj.hexifence.*;
 
 public class SongtNmirpuriClever implements Player, Piece {
-	
+	public static final int LIMIT_DEPTH = 2;
+	public static final int MAXINT =  Integer.MAX_VALUE / 2;
+	public static final int MININT =  Integer.MIN_VALUE / 2;
+	public static final int MYTURN =  1;
+	public static final int OPPTURN =  2;
 	public Board gameBoard; // the board to put pieces on
 	public int piece; // either BLUE(1) or RED(2) 
 	// represent the state of this board
@@ -25,82 +40,101 @@ public class SongtNmirpuriClever implements Player, Piece {
 	
 	/**
 	 * return the next move to make using minimax Search tree
+	 * + alpha beta pruning
 	 * @return Move : the next move
 	 */
-	public Move miniMaxDecision(){
-		int possibleMoves = gameBoard.getPossibleMoves();
-		int[] valueArray = new int[possibleMoves];
-		Move[] moveArray = new Move[possibleMoves];
-		int maxIndex = 0;
-		int idx = 0;
-		
-		// build a Move array which contains all possible moves for the current state		
-		// and find out the minimax value of it
-		outerloop:
-		for(int i = 0; i<gameBoard.size; i++){
-			for(int j = 0; j<gameBoard.size; j++){
-				if (gameBoard.board[i][j].getCharValue() == '+'){
-					Move move = new Move();
-					move.Row = i;
-					move.Col = j;
-					move.P = piece;
-					moveArray[idx] = move;
-					
-					// copy the current board and make this possible move
-					Board board = new Board(gameBoard);
-					board.setBoard(move);
-					
-					// find out the minimax value of this move
-					valueArray[idx] = miniMaxValue(board);
-					idx++;
-				}
-				
-				// if we find out all possible move positions, break the loop
-				if (idx == possibleMoves)
-					break outerloop;
-				
-			}
+	// check if the end of game has reached when generating children
+	// = if getwinner() == BLUE or RED ... RETURN 1 OR -1 OR 0
+	public int[] minimax(int depth, int turn, int alpha, int beta){
+		List<Move> posbMoves = gameBoard.generatePosbMoves();
+		 
+	    // mySeed is maximizing; while oppSeed is minimizing
+	    int score;
+	    int bestRow = -1;
+	    int bestCol = -1;
+	     
+	    
+		// if game finished, win score 1, lose score -1, draw score 0
+		if(getWinner() != 0){
+			if(getWinner() == Piece.DEAD)
+				score = 0;
+			else if(getWinner() == Piece.BLUE && piece == Piece.BLUE ||
+					getWinner() == Piece.RED && piece == Piece.RED )
+				score = 1;
+			else
+				score = -1;
+			
+			return new int[] {score, bestRow, bestCol};
 		}
 		
-		// return the move with highest evaluation value
-		for(int i = 0; i<possibleMoves; i++){
-			if (valueArray[maxIndex] < valueArray[i])
-				maxIndex = i;
+		// if reached the limit depth
+		else if(depth == 0){
+			if (piece == BLUE)
+				score = 3*gameBoard.blueHex - 3*gameBoard.redHex;
+			else
+				score = 3*gameBoard.redHex - 3*gameBoard.blueHex;
+			
+			return new int[] {score, bestRow, bestCol};
 		}
 		
-		return moveArray[maxIndex];
+		// neither limit depth reached nor game finished
+		else {
+			for (Move move : posbMoves) {
+	            // try this move for the current "player"
+	            gameBoard.setBoard(move);
+	            if (turn == MYTURN) {  // needs to maximize value
+	               score = minimax(depth - 1, OPPTURN, alpha, beta)[0];
+	               if (score > alpha) {
+	                  alpha = score;
+	                  bestRow = move.Row;
+	                  bestCol = move.Col;
+	               }
+	            } else {  // needs to minimize value
+	               score = minimax(depth - 1, MYTURN, alpha, beta)[0];
+	               if (score < beta) {
+	                  beta = score;
+	                  bestRow = move.Row;
+	                  bestCol = move.Col;
+	               }
+	            }
+	            
+	            // undo move
+	            gameBoard.undoMove(move);
+	            
+	            // cut-off
+	            if (alpha >= beta) break;
+	         }
+			
+	         return new int[] {(turn == MYTURN) ? alpha : beta, bestRow, bestCol};
+			
+			
+		}
 		
-	}
-	
-	
-	/**
-	 * decide the minimax Value of the given state
-	 * @return evaluation value 
-	 */
-	public int miniMaxValue(Board board){
-		int value = 0;
-		Random rand = new Random();
-		value = rand.nextInt(gameBoard.size);
+		
 
-		return value;
 		
 	}
-	
+
 
 	@Override
 	public Move makeMove() {
-		// declare Move object
-		Move move;
+		// get all possible moves as an array
+		Move move = new Move();
 		
-		// using miniMax search tree find out the next move
-		move = miniMaxDecision();
+		int[] result = minimax(LIMIT_DEPTH, MYTURN, Integer.MIN_VALUE, Integer.MAX_VALUE);
+		
+		move.Row = result[1];
+		move.Col = result[2];
 		move.P = piece;
+
 		gameBoard.setBoard(move);
 		
 		// return the Move object so that the opponent can update their board config
 		return move;
 	}
 
+	
+	
 	@Override
 	public int opponentMove(Move m) {
 		// if the opponent's move is illegal, return INVALID
