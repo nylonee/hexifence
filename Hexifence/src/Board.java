@@ -8,6 +8,7 @@
 import java.io.PrintStream;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
+
 import aiproj.hexifence.*;
 
 public class Board {
@@ -303,6 +304,38 @@ public class Board {
 		}
 
 		return captured;
+	}
+	
+
+	/**
+	 * return all possible moves from the current state
+	 * @param board
+	 * @param p piece, either BLUE or RED
+	 * @return array of Moves
+	 */
+	public Move[] generatePosbMoves(int p){
+		Move[] moveArr = new Move[getPossibleMoves()];
+		int idx = 0;
+		for(int i = 0; i<size; i++){
+			for(int j = 0; j<size; j++){
+				if(board[i][j].getCharValue() == '+'){
+					Move move = new Move();
+					move.Row = i;
+					move.Col = j;
+					move.P = p;
+					moveArr[idx] = move;
+					idx++;
+				}
+				
+				if(idx >= getPossibleMoves()){
+					break;
+				}
+				
+			}
+		}
+		
+		return moveArr;
+		
 	}
 	
 	
