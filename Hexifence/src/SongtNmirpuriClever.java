@@ -15,7 +15,7 @@ import java.util.Random;
 import aiproj.hexifence.*;
 
 public class SongtNmirpuriClever implements Player, Piece {
-	public static final int LIMIT_DEPTH = 2;
+	public static final int LIMIT_DEPTH = 3;
 	public static final int MAXINT =  Integer.MAX_VALUE / 2;
 	public static final int MININT =  Integer.MIN_VALUE / 2;
 	public static final int MYTURN =  1;
@@ -58,8 +58,8 @@ public class SongtNmirpuriClever implements Player, Piece {
 		if(getWinner() != 0){
 			if(getWinner() == Piece.DEAD)
 				score = 0;
-			else if(getWinner() == Piece.BLUE && piece == Piece.BLUE ||
-					getWinner() == Piece.RED && piece == Piece.RED )
+			else if((getWinner() == Piece.BLUE && piece == Piece.BLUE) ||
+					(getWinner() == Piece.RED && piece == Piece.RED) )
 				score = 1;
 			else
 				score = -1;
@@ -105,13 +105,8 @@ public class SongtNmirpuriClever implements Player, Piece {
 	            if (alpha >= beta) break;
 	         }
 			
-	         return new int[] {(turn == MYTURN) ? alpha : beta, bestRow, bestCol};
-			
-			
+	         return new int[] {(turn == MYTURN) ? alpha : beta, bestRow, bestCol};	
 		}
-		
-		
-
 		
 	}
 

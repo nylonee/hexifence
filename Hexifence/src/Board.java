@@ -238,8 +238,8 @@ public class Board {
 			outerloop:
 			for(int i = 0; i<size; i+=2){
 				for(int j = 0; j<size; j+=2){
-					if(isCaptured(i, j, move.P) == UNDO){
-						char ch = board[move.Row][move.Col].getCharValue();
+					if(checkTile(i,j) && isCaptured(i, j, move.P) == UNDO){
+						char ch = board[move.Row+1][move.Col+1].getCharValue();
 						
 						// decreased the number of captured cell
 						if(ch == 'b')
@@ -248,7 +248,7 @@ public class Board {
 							redHex--;
 						
 						// update character as '-'
-						board[move.Row][move.Col].setCharValue('-');
+						board[move.Row+1][move.Col+1].setCharValue('-');
 						
 						counter--;
 						
@@ -350,7 +350,7 @@ public class Board {
 		}
 		
 		// used for undoMove()
-		if(captured == 0 && board[i+j][j+1].getCharValue() != '-'){
+		if(captured == 0 && checkTile(i+1, j+1) && board[i+1][j+1].getCharValue() != '-'){
 			return UNDO;
 		}
 		
