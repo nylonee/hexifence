@@ -1,13 +1,12 @@
 import java.io.PrintStream;
 import java.util.Random;
+import java.util.Scanner;
 import aiproj.hexifence.*;
 
-public class SongtNmirpuriFirstFive implements Player, Piece {
+public class SongtNmirpuriCleverest implements Player, Piece {
 	
 	public Board gameBoard; // the board to put pieces on
 	public int piece; // either BLUE(1) or RED(2) 
-	public int count = -1;
-	public Move[] tempArr = new Move[5];
 	
 	
 	// represent the state of this board
@@ -16,38 +15,6 @@ public class SongtNmirpuriFirstFive implements Player, Piece {
 
 	@Override
 	public int init(int n, int p) {
-		Move temp = new Move();
-		temp.Row = 8;
-		temp.Col = 8;
-		temp.P = p;
-		tempArr[0] = temp;
-
-		temp = new Move();
-		temp.Row = 8;
-		temp.Col = 9;
-		temp.P = p;
-		tempArr[1] = temp;
-
-		temp = new Move();
-		temp.Row = 9;
-		temp.Col = 8;
-		temp.P = p;
-		tempArr[2] = temp;
-
-		temp = new Move();
-		temp.Row = 9;
-		temp.Col = 10;
-		temp.P = p;
-		tempArr[3] = temp;
-
-		temp = new Move();
-		temp.Row = 10;
-		temp.Col = 9;
-		temp.P = p;
-		tempArr[4] = temp;
-
-
-
 		try{
 			gameBoard = new Board(n);
 			this.piece = p;
@@ -63,31 +30,18 @@ public class SongtNmirpuriFirstFive implements Player, Piece {
 		// create Move object
 		Move move = new Move();
 		move.P = piece;
-		boolean moveMade = false;
-		
-		if(count < 4){
-			count++;
-			//moveMade = true;
-			gameBoard.setBoard(tempArr[count]);
-			return tempArr[count];
 
-		}
+		Scanner scan = new Scanner(System.in);
 
+		System.out.print("Enter the row: ");
+		int row = scan.nextInt();
+		System.out.print("Enter the col: ");
+		int col = scan.nextInt();
 
+		move.Row = row;
+		move.Col = col;
 
-		// Make an available move by randomly choosing two values for row and column
-		while(!moveMade){
-			Random rand = new Random();
-			int row = rand.nextInt(gameBoard.size);
-			int col = rand.nextInt(gameBoard.size);
-			
-			if(gameBoard.board[row][col].getCharValue() == '+'){
-				move.Row = row;
-				move.Col = col;
-				gameBoard.setBoard(move);
-				moveMade = true;
-			}
-		}
+		gameBoard.setBoard(move);
 		
 		// return the Move object so that the opponent can update their board config
 		return move;
