@@ -239,7 +239,7 @@ public class Board {
 			for(int i = 0; i<size; i+=2){
 				for(int j = 0; j<size; j+=2){
 					if(checkTile(i,j) && isCaptured(i, j, move.P) == UNDO){
-						char ch = board[move.Row+1][move.Col+1].getCharValue();
+						char ch = board[i+1][j+1].getCharValue();
 						
 						// decreased the number of captured cell
 						if(ch == 'b')
@@ -248,7 +248,7 @@ public class Board {
 							redHex--;
 						
 						// update character as '-'
-						board[move.Row+1][move.Col+1].setCharValue('-');
+						board[i+1][j+1].setCharValue('-');
 						
 						counter--;
 						
@@ -340,17 +340,27 @@ public class Board {
 		int[] iValues = {i, i+1, i, i+2, i+1, i+2};
 		int[] jValues = {j, j, j+1, j+1, j+2, j+2};
 		
+
+		// check if the 6 tiles are valid
+		for(int k = 0; k < jValues.length; k++){ 
+			if( !checkTile(iValues[k], jValues[k]) ){
+				captured = 0;
+				return captured;
+			}
+		}
+
+
 		// check if this cell has been captured
-		for(int k = 0; k < jValues.length; k++){
-			if( !checkTile(iValues[k], jValues[k]) ||
-				board[iValues[k]][jValues[k]].getCharValue() == '+' ){
+		for(int k = 0; k < jValues.length; k++){ 
+			if( board[iValues[k]][jValues[k]].getCharValue() == '+' ){
 				captured = 0;
 				break;
+
 			}
 		}
 		
 		// used for undoMove()
-		if(captured == 0 && checkTile(i+1, j+1) && board[i+1][j+1].getCharValue() != '-'){
+		if(captured == 0 && board[i+1][j+1].getCharValue() != '-'){
 			return UNDO;
 		}
 		
@@ -445,4 +455,3 @@ public class Board {
 		return maxByOneMove;
 	}
 }
-
