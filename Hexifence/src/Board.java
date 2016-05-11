@@ -5,6 +5,7 @@
  * @version 1.0
  * 
  *  Attribution : https://www.ntu.edu.sg/home/ehchua/programming/java/JavaGame_TicTacToe_AI.html
+ *  For shuffle array : http://stackoverflow.com/questions/1519736/random-shuffling-of-an-array
  */
 
 // probably can create hex cell and make use of it in undoMove and setBoard
@@ -417,10 +418,27 @@ public class Board {
 			}
 		}
 		
+		shuffleArray(posbMoves);
 		return posbMoves;
 		
 	}
 	
+	
+
+	/** Shuffle a given Move array
+	* 
+	*/
+	private void shuffleArray(List<Move> posbMoves) {
+    	int index;
+    	Move temp;
+    	Random random = new Random();
+    	for (int i = posbMoves.size() - 1; i > 0; i--){
+        	index = random.nextInt(i + 1);
+        	temp = posbMoves.get(index);
+        	posbMoves.set(index, posbMoves.get(i));
+        	posbMoves.set(i, temp);
+    	}
+	}
 	
 	
 	/** Return the possible moves
