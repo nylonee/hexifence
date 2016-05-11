@@ -4,17 +4,19 @@
  * @author Tessa Song (songt)
  * @version 1.0
  * 
- *  Attribution : https://www.ntu.edu.sg/home/ehchua/programming/java/JavaGame_TicTacToe_AI.html
- *  For shuffle array : http://stackoverflow.com/questions/1519736/random-shuffling-of-an-array
+ * Attribution: 
+ *  The basic frame of generatePosbMoves() function in this script was referred from
+ *  https://www.ntu.edu.sg/home/ehchua/programming/java/JavaGame_TicTacToe_AI.html
+ * 
+ *  For shuffle array function
+ *  http://stackoverflow.com/questions/1519736/random-shuffling-of-an-array
+ *  
  */
 
 // probably can create hex cell and make use of it in undoMove and setBoard
 
 import java.util.*;
 import java.io.PrintStream;
-import java.util.NoSuchElementException;
-import java.util.Scanner;
-
 import aiproj.hexifence.*;
 
 public class Board {
@@ -29,6 +31,7 @@ public class Board {
 	public int blueHex = 0; // Number of hexagons captured by blue player
 	public int redHex = 0; // Number of hexagons captured by red player
 	
+	
 	/** constructor 
 	 */
 	public Board(int n){
@@ -37,38 +40,8 @@ public class Board {
 		buildBoard();
 	}
 	
-	/**
-	 * copy constructor
-	 * make a deep copy of the given source 
-	 */
-	public Board(Board source){
-		this.n = source.n;
-		this.size = source.size;
-
-		// create board object
-		board = new Tile[size][size];
-		
-		// copy the tiles in board
-		for(int i = 0;i<size; i++){
-			for(int j = 0; j<size; j++){
-				Tile temp = new Tile();
-				temp.setCaptureValue(source.board[i][j].getCaptureValue());
-				temp.setCharValue(source.board[i][j].getCharValue());
-				board[i][j] = temp;
-				
-			}
-		}
-		
-		// copy the rest of attributes
-		possibleMoves = source.possibleMoves;
-		maxByOneMove = source.maxByOneMove;
-		avlbCaptures = source.avlbCaptures;
-		blueHex = source.blueHex;
-		redHex = source.redHex;
-		
-	}
 	
-	/** Build a board by filling it with + and -
+	/** Build a board by filling it with either + or -
 	 */
 	public void buildBoard(){
 		
@@ -88,6 +61,7 @@ public class Board {
 			}
 		}
 	}
+	
 	
 	/**
 	 * Print this board
@@ -234,14 +208,14 @@ public class Board {
 		int hexCapted = board[move.Row][move.Col].getCaptureValue();
 		int counter = hexCapted;
 		
-		// retrieve hexs that captured before by undoing this move
+		// retrieve the hexs that captured before by this move
 		if (hexCapted > 0){
 			outerloop:
 			for(int i = 0; i<size; i+=2){
 				for(int j = 0; j<size; j+=2){
 					if(checkTile(i,j) && isCaptured(i, j, move.P) == UNDO){
 						char ch = board[i+1][j+1].getCharValue();
-						
+		
 						// decreased the number of captured cell
 						if(ch == 'b')
 							blueHex--;
@@ -264,9 +238,6 @@ public class Board {
 		
 		// update possible moves
 		getPossibleMoves();
-		
-		
-		
 		
 	}
 	
@@ -326,11 +297,12 @@ public class Board {
 	
 	
 	/**
-	 * check if this hexagon has been captured
-	 *  if captured, put either 'r' or 'b' at the centre tile 
+	 * Check if this hexagon has been captured
+	 * If captured, put either 'r' or 'b' at the centre tile 
 	 * @return 1 if captured
 	 * 		   otherwise, 0
-	 * if the cell is not supposed to be captured but the centre char is not '-'
+	 * If the cell is not supposed to be captured, i.e there is more than one '+'
+	 * but the centre char is not '-'
 	 * return UNDO. This is used for undoMove()
 	 * 
 	 */
@@ -342,14 +314,13 @@ public class Board {
 		int[] jValues = {j, j, j+1, j+1, j+2, j+2};
 		
 
-		// check if the 6 tiles are valid
+		// check if the 6 tiles are all valid, otherwise return rightaway
 		for(int k = 0; k < jValues.length; k++){ 
 			if( !checkTile(iValues[k], jValues[k]) ){
 				captured = 0;
 				return captured;
 			}
 		}
-
 
 		// check if this cell has been captured
 		for(int k = 0; k < jValues.length; k++){ 
@@ -369,7 +340,6 @@ public class Board {
 		if(captured == 1 && board[i+1][j+1].getCharValue() != '-' ){
 			captured = 0;
 		}
-		
 		
 		// if captured, set character of the centre tile as either 'b' or 'r'
 		if(captured == 1){
@@ -399,7 +369,9 @@ public class Board {
 	         return posbMoves;   // return empty list
 	    }
 	    
+	    // get all possible moves('+')
 		int idx = 0;
+		outerloop:
 		for(int i = 0; i<size; i++){
 			for(int j = 0; j<size; j++){
 				if(board[i][j].getCharValue() == '+'){
@@ -411,14 +383,18 @@ public class Board {
 					idx++;
 				}
 				
+				// if there is no more possible move to add, break
 				if(idx >= getPossibleMoves()){
-					break;
+					break outerloop;
 				}
 				
 			}
 		}
 		
+		// shuffle array so that the agent won't just take the first possible move
+		// when most of the moves have the same evaluation value
 		shuffleArray(posbMoves);
+		
 		return posbMoves;
 		
 	}
@@ -426,8 +402,9 @@ public class Board {
 	
 
 	/** Shuffle a given Move array
-	* 
-	*/
+	 * 
+	 * @param posbMoves array of possible moves
+	 */
 	private void shuffleArray(List<Move> posbMoves) {
     	int index;
     	Move temp;

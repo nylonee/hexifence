@@ -1,17 +1,21 @@
-/**
+/** The final relational game playing agent for playing hexagon fence game.
+ * The general strategy used is minimax + alpha-beta pruning algorithm.
+ * The description of how the evaluation function was driven is written in
+ * comment.txt file
  *
  * @author Nihal Mirpuri (nmirpuri)
  * @author Tessa Song (songt)
  * @version 1.0
  * 
- *  Attribution : https://www.ntu.edu.sg/home/ehchua/programming/java/JavaGame_TicTacToe_AI.html
+ * Attribution: 
+ *  The basic frame of minimax function in this script was referred from
+ *  https://www.ntu.edu.sg/home/ehchua/programming/java/JavaGame_TicTacToe_AI.html
+ *  
  */
 
 
 import java.io.PrintStream;
 import java.util.*;
-import java.util.Random;
-
 import aiproj.hexifence.*;
 
 public class SongtNmirpuriClever implements Player, Piece {
