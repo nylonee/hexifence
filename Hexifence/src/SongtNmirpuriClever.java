@@ -46,7 +46,18 @@ public class SongtNmirpuriClever implements Player, Piece {
 	// check if the end of game has reached when generating children
 	// = if getwinner() == BLUE or RED ... RETURN 1 OR -1 OR 0
 	public int[] minimax(int depth, int turn, int alpha, int beta){
-		List<Move> posbMoves = gameBoard.generatePosbMoves();
+		List<Move> posbMoves;
+
+		// generate all possible moves
+		if (turn == MYTURN) {
+			posbMoves = gameBoard.generatePosbMoves(piece);
+		} else {
+			if(piece == Piece.BLUE){
+				posbMoves = gameBoard.generatePosbMoves(Piece.RED);
+			}else{
+				posbMoves = gameBoard.generatePosbMoves(Piece.BLUE);
+			}
+		}
 		 
 	    // mySeed is maximizing; while oppSeed is minimizing
 	    int score;
@@ -79,17 +90,6 @@ public class SongtNmirpuriClever implements Player, Piece {
 		// neither limit depth reached nor game finished
 		else {
 			for (Move move : posbMoves) {
-
-	            // decide the turn of this move
-				if(turn == MYTURN){
-					move.P = piece;
-				}else{
-					if(piece == Piece.BLUE){
-						move.P = Piece.RED;
-					}else{
-						move.P = Piece.BLUE;
-					}
-				}
 
 				// try this move for the current "player"
 	            gameBoard.setBoard(move);

@@ -390,7 +390,7 @@ public class Board {
 	 * return all possible moves from the current state
 	 * @return array of Moves
 	 */
-	public List<Move> generatePosbMoves(){
+	public List<Move> generatePosbMoves(int p){
 		List<Move> posbMoves = new ArrayList<Move>(); // allocate List
 		 
 	    // If gameover, i.e., no possible move
@@ -405,7 +405,7 @@ public class Board {
 					Move move = new Move();
 					move.Row = i;
 					move.Col = j;
-					//move.P = p;
+					move.P = p;
 					posbMoves.add(move);
 					idx++;
 				}
