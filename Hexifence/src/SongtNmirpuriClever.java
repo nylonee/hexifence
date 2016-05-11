@@ -47,7 +47,6 @@ public class SongtNmirpuriClever implements Player, Piece {
 	// = if getwinner() == BLUE or RED ... RETURN 1 OR -1 OR 0
 	public int[] minimax(int depth, int turn, int alpha, int beta){
 		List<Move> posbMoves = gameBoard.generatePosbMoves();
-		//System.out.println("number of posb moves : "+ posbMoves.size());
 		 
 	    // mySeed is maximizing; while oppSeed is minimizing
 	    int score;
@@ -64,7 +63,6 @@ public class SongtNmirpuriClever implements Player, Piece {
 				score = 1;
 			else
 				score = -1;
-			//System.out.println(score);
 			return new int[] {score, bestRow, bestCol};
 		}
 		
@@ -74,17 +72,15 @@ public class SongtNmirpuriClever implements Player, Piece {
 				score = 10*gameBoard.blueHex - 3*gameBoard.redHex;
 			else
 				score = 10*gameBoard.redHex - 3*gameBoard.blueHex;
-			
-			//System.out.println(score);
+
 			return new int[] {score, bestRow, bestCol};
 		}
 		
 		// neither limit depth reached nor game finished
 		else {
 			for (Move move : posbMoves) {
-				//System.out.println("hello");
-	            // try this move for the current "player"
 
+	            // decide the turn of this move
 				if(turn == MYTURN){
 					move.P = piece;
 				}else{
@@ -95,26 +91,19 @@ public class SongtNmirpuriClever implements Player, Piece {
 					}
 				}
 
-
+				// try this move for the current "player"
 	            gameBoard.setBoard(move);
-	            //gameBoard.printBoard(System.out);
-	            //System.out.println(move.Row + " " + move.Col);
 	            if (turn == MYTURN) {  // needs to maximize value
-	            	//System.out.println(alpha + " " + beta);
 	               score = minimax(depth - 1, OPPTURN, alpha, beta)[0];
-	               //System.out.println(score);
 	               if (score > alpha) {
-	               	
 	                  alpha = score;
 	                  bestRow = move.Row;
 	                  bestCol = move.Col;
 
 	               }
 	            } else {  // needs to minimize value
-	            	//System.out.println(alpha + " " + beta);
 	               score = minimax(depth - 1, MYTURN, alpha, beta)[0];
 	               if (score < beta) {
-	               	//System.out.println("helloooo");
 	                  beta = score;
 	                  bestRow = move.Row;
 	                  bestCol = move.Col;
@@ -140,8 +129,6 @@ public class SongtNmirpuriClever implements Player, Piece {
 		Move move = new Move();
 		
 		int[] result = minimax(LIMIT_DEPTH, MYTURN, MININT, MAXINT);
-		//System.out.println(MININT+" "+MAXINT);
-		//System.out.println(result[0]+" "+result[1]+" "+result[2]);
 
 		move.Row = result[1];
 		move.Col = result[2];
