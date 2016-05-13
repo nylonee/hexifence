@@ -104,10 +104,8 @@ public class SongtNmirpuriClever implements Player, Piece {
 	            	// if this move gives additional move
 	            	if (move.P == Piece.BLUE && tempB < gameBoard.blueHex){
 	            		score = minimax(depth - 1, MYTURN, alpha, beta)[0];	
-	            		//System.out.println(score);
 	            	}else if (move.P == Piece.RED && tempR < gameBoard.redHex){
 	            		score = minimax(depth - 1, MYTURN, alpha, beta)[0];	
-	            		//System.out.println(score);
 	            	}
 	            	// otherwise
 	            	else
