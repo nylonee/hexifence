@@ -96,9 +96,24 @@ public class SongtNmirpuriClever implements Player, Piece {
 			for (Move move : posbMoves) {
 
 				// try this move for the current "player"
+				int tempB = gameBoard.blueHex;
+				int tempR = gameBoard.redHex;
 	            gameBoard.setBoard(move);
+	            
 	            if (turn == MYTURN) {  // needs to maximize value
-	               score = minimax(depth - 1, OPPTURN, alpha, beta)[0];
+	            	// if this move gives additional move
+	            	if (move.P == Piece.BLUE && tempB < gameBoard.blueHex){
+	            		score = minimax(depth - 1, MYTURN, alpha, beta)[0];	
+	            		//System.out.println(score);
+	            	}else if (move.P == Piece.RED && tempR < gameBoard.redHex){
+	            		score = minimax(depth - 1, MYTURN, alpha, beta)[0];	
+	            		//System.out.println(score);
+	            	}
+	            	// otherwise
+	            	else
+	            		score = minimax(depth - 1, OPPTURN, alpha, beta)[0];	
+	       
+	            	
 	               if (score > alpha) {
 	                  alpha = score;
 	                  bestRow = move.Row;
@@ -106,7 +121,15 @@ public class SongtNmirpuriClever implements Player, Piece {
 
 	               }
 	            } else {  // needs to minimize value
-	               score = minimax(depth - 1, MYTURN, alpha, beta)[0];
+	            	// if this move gives additional move
+	            	if (move.P == Piece.BLUE && tempB < gameBoard.blueHex)
+	            		score = minimax(depth - 1, OPPTURN, alpha, beta)[0];	
+	            	else if (move.P == Piece.RED && tempR < gameBoard.redHex)
+	            		score = minimax(depth - 1, OPPTURN, alpha, beta)[0];
+	            	//otherwise
+	            	else
+	            		score = minimax(depth - 1, MYTURN, alpha, beta)[0];
+	            	
 	               if (score < beta) {
 	                  beta = score;
 	                  bestRow = move.Row;
