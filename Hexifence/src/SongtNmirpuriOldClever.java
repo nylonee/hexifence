@@ -18,7 +18,7 @@ import java.io.PrintStream;
 import java.util.*;
 import aiproj.hexifence.*;
 
-public class SongtNmirpuriClever implements Player, Piece {
+public class SongtNmirpuriOldClever implements Player, Piece {
 	public static final int LIMIT_DEPTH = 3;
 	public static final int MAXINT =  Integer.MAX_VALUE / 2;
 	public static final int MININT =  Integer.MIN_VALUE / 2;
@@ -96,20 +96,10 @@ public class SongtNmirpuriClever implements Player, Piece {
 			for (Move move : posbMoves) {
 
 				// try this move for the current "player"
-				int tempB = gameBoard.blueHex;
-				int tempR = gameBoard.redHex;
 	            gameBoard.setBoard(move);
 	            
 	            if (turn == MYTURN) {  // needs to maximize value
-	            	// if this move gives additional move
-	            	if (move.P == Piece.BLUE && tempB < gameBoard.blueHex){
-	            		score = minimax(depth - 1, MYTURN, alpha, beta)[0];	
-	            	}else if (move.P == Piece.RED && tempR < gameBoard.redHex){
-	            		score = minimax(depth - 1, MYTURN, alpha, beta)[0];	
-	            	}
-	            	// otherwise
-	            	else
-	            		score = minimax(depth - 1, OPPTURN, alpha, beta)[0];	
+	            	score = minimax(depth - 1, OPPTURN, alpha, beta)[0];	
 	       
 	            	
 	               if (score > alpha) {
@@ -119,14 +109,7 @@ public class SongtNmirpuriClever implements Player, Piece {
 
 	               }
 	            } else {  // needs to minimize value
-	            	// if this move gives additional move
-	            	if (move.P == Piece.BLUE && tempB < gameBoard.blueHex)
-	            		score = minimax(depth - 1, OPPTURN, alpha, beta)[0];	
-	            	else if (move.P == Piece.RED && tempR < gameBoard.redHex)
-	            		score = minimax(depth - 1, OPPTURN, alpha, beta)[0];
-	            	//otherwise
-	            	else
-	            		score = minimax(depth - 1, MYTURN, alpha, beta)[0];
+	            	score = minimax(depth - 1, MYTURN, alpha, beta)[0];
 	            	
 	               if (score < beta) {
 	                  beta = score;
