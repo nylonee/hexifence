@@ -3,7 +3,7 @@ import java.util.Random;
 import java.util.Scanner;
 import aiproj.hexifence.*;
 
-public class SongtNmirpuriCleverest implements Player, Piece {
+public class SongtNmirpuriManual implements Player, Piece {
 	
 	public Board gameBoard; // the board to put pieces on
 	public int piece; // either BLUE(1) or RED(2) 

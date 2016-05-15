@@ -18,7 +18,7 @@ import java.io.PrintStream;
 import java.util.*;
 import aiproj.hexifence.*;
 
-public class SongtNmirpuriClever implements Player, Piece {
+public class SongtNmirpuriDummy implements Player, Piece {
 	public static final int LIMIT_DEPTH = 3;
 	public static final int MAXINT =  Integer.MAX_VALUE / 2;
 	public static final int MININT =  Integer.MIN_VALUE / 2;

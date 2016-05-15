@@ -40,7 +40,6 @@ public class Board {
 		buildBoard();
 	}
 	
-	
 	/** Build a board by filling it with either + or -
 	 */
 	public void buildBoard(){
@@ -62,7 +61,6 @@ public class Board {
 		}
 	}
 	
-	
 	/**
 	 * Print this board
 	 */
@@ -75,7 +73,6 @@ public class Board {
 		}
 		output.println();
 	}
-	
 	
 	/**
 	 * Given a tile point using i, j, returns true if the tile coordinate is valid
@@ -107,7 +104,6 @@ public class Board {
 		return true;
 	}
 
-	
 	/** initialise capture value of all tiles as 0
 	*/
 	public void initialiseCaptureValue(){
@@ -133,8 +129,6 @@ public class Board {
 				// increase avlbCaptures if this cell is available for capture by single move 
 				avlbCaptures += determineCaptureValue(i, j);
 	}
-	
-	
 	
 	/** Determine if the given hexagon by x,y coordinate can be captured by single move or not
 	 *  and increase the capture value of the available tile by 1
@@ -192,7 +186,6 @@ public class Board {
 		return 0;
 	}
 	
-	
 	/**
 	 * Undo the given move from the board
 	 * @param move
@@ -200,6 +193,9 @@ public class Board {
 	public void undoMove(Move move){
 		// set the character as '+'
 		board[move.Row][move.Col].setCharValue('+');
+		
+		// reset maxByOneMove
+		maxByOneMove = 0;
 		
 		// update capture values
 		determineCaptureValues();
@@ -241,8 +237,6 @@ public class Board {
 		
 	}
 	
-	
-	
 	/** Update this board by applying the newly-made move
 	 *  If there is any hexagon captured by this move, put either r or b 
 	 *  at the centre tile 
@@ -279,6 +273,9 @@ public class Board {
 				}
 			}
 		}
+		
+		// reset maxByOneMove
+		maxByOneMove = 0;
 	
 		// update capture values of tiles
 		determineCaptureValues();
@@ -294,7 +291,6 @@ public class Board {
 					
 
 	}
-	
 	
 	/**
 	 * Check if this hexagon has been captured
@@ -356,7 +352,6 @@ public class Board {
 		return captured;
 	}
 	
-
 	/**
 	 * return all possible moves from the current state
 	 * @return array of Moves
@@ -374,7 +369,7 @@ public class Board {
 		outerloop:
 		for(int i = 0; i<size; i++){
 			for(int j = 0; j<size; j++){
-				if(board[i][j].getCharValue() == '+'){
+				if(checkTile(i,j) && board[i][j].getCharValue() == '+'){
 					Move move = new Move();
 					move.Row = i;
 					move.Col = j;
@@ -399,8 +394,6 @@ public class Board {
 		
 	}
 	
-	
-
 	/** Shuffle a given Move array
 	 * 
 	 * @param posbMoves array of possible moves
@@ -417,7 +410,6 @@ public class Board {
     	}
 	}
 	
-	
 	/** Return the possible moves
 	 * @return the number of possible Moves
 	 */
@@ -425,15 +417,14 @@ public class Board {
 		possibleMoves = 0;
 		for(int i = 0; i<size; i++){
 			for(int j = 0; j<size; j++){
-				if (board[i][j].getCharValue() == '+'){
-					possibleMoves++;
-				}
+				if(checkTile(i, j))
+					if (board[i][j].getCharValue() == '+')
+						possibleMoves++;
 			}
 		}
 
 		return possibleMoves;
 	}
-	
 	
 	/** Return available cells for capture
 	 * @return Number of hexagonal cells available for capture by a single move
@@ -442,11 +433,39 @@ public class Board {
 		return avlbCaptures;
 	}
 	
-	
 	/** Return maximum number of cells which can be captured by one move
 	 * @return maximum number of hexagonal cells which can be captured by one move
 	 */
 	public int getMaxByOneMove(){
 		return maxByOneMove;
+	}
+	
+	/** Return maximum streak possible by one player on the current board **/
+	public int getMaxStreak(int depthCap, int score){
+		// No available captures - Streak ended
+		if(avlbCaptures == 0) return 0;
+		
+		for(int i=0; i<size; i++) {
+			for(int j=0; j<size; j++) {
+				if(checkTile(i, j)) {
+					// Is there a hex available for capture?
+					int captureValue = board[i][j].getCaptureValue();
+					if(captureValue > 0) {
+						// Make the move, get score, then undo move
+						Move tempMove = new Move();
+						tempMove.P = Piece.BLUE;
+						tempMove.Row = i;
+						tempMove.Col = j;
+						setBoard(tempMove);
+						// Recursively get the rest of the streak
+						if(score < depthCap)
+							score = getMaxStreak(depthCap, score) + captureValue;
+						undoMove(tempMove);
+						if(score >= depthCap) return score;
+					}
+				}
+			}
+		}
+		return score;
 	}
 }
