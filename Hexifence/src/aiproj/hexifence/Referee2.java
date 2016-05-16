@@ -19,7 +19,7 @@ public class Referee2 implements Piece{
 	
 	private static int counter = 0;
 	
-	private static int totalGames = 100;
+	private static int totalGames = 10000;
 	private static int gamesWonBy2 = 0;
 	
 	/*
