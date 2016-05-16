@@ -29,6 +29,11 @@ public class SongtNmirpuriClever implements Player, Piece {
 	// represent the state of this board
 	public int boardState = Piece.EMPTY; 
 	
+	// score for win, lose and draw
+	public static final int WIN = 10000;
+	public static final int LOSE = -10000;
+	public static final int DRAW = LOSE/2;
+	
 	
 	// Evaluation Features (score multipliers)
 	public static final int SAFEST_MOVE = 5;
@@ -82,13 +87,12 @@ public class SongtNmirpuriClever implements Player, Piece {
 		// if game finished, win score 1, lose score -1, draw score 0
 		if(getWinner() != 0){
 			if(getWinner() == Piece.DEAD)
-				score = 0;
+				score = DRAW;
 			else if((getWinner() == Piece.BLUE && piece == Piece.BLUE) ||
 					(getWinner() == Piece.RED && piece == Piece.RED) )
-				score = 1;
+				score = WIN;
 			else
-				score = -1;
-			System.out.println(score+ " " +bestRow + " " +bestCol);
+				score = LOSE;
 			return new int[] {score, bestRow, bestCol};
 		}
 		
