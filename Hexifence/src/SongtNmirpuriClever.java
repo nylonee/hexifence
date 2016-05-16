@@ -19,7 +19,7 @@ import java.util.*;
 import aiproj.hexifence.*;
 
 public class SongtNmirpuriClever implements Player, Piece {
-	public static final int LIMIT_DEPTH = 4;
+	
 	public static final int MAXINT =  Integer.MAX_VALUE / 2;
 	public static final int MININT =  Integer.MIN_VALUE / 2;
 	public static final int MYTURN =  1;
@@ -36,6 +36,9 @@ public class SongtNmirpuriClever implements Player, Piece {
 	public static final int THEIR_STREAK = 2;
 	public static final int MY_CAPTURE = 1;
 	public static final int THEIR_CAPTURE = 3;
+	public static final int SIZE_DIVISION = 20;
+	public static final int LIMIT_DEPTH = 4;
+	public static final int DEEPER_LIMIT = 5;
 
 	
 	@Override
@@ -85,6 +88,7 @@ public class SongtNmirpuriClever implements Player, Piece {
 				score = 1;
 			else
 				score = -1;
+			System.out.println(score+ " " +bestRow + " " +bestCol);
 			return new int[] {score, bestRow, bestCol};
 		}
 		
@@ -136,7 +140,6 @@ public class SongtNmirpuriClever implements Player, Piece {
 	            	else
 	            		score = minimax(depth - 1, OPPTURN, alpha, beta)[0];	
 	       
-	            	
 	               if (score > alpha) {
 	                  alpha = score;
 	                  bestRow = move.Row;
@@ -177,9 +180,13 @@ public class SongtNmirpuriClever implements Player, Piece {
 	public Move makeMove() {
 		// get all possible moves as an array
 		Move move = new Move();
+		int[] result;
 		
-		int[] result = minimax(LIMIT_DEPTH, MYTURN, MININT, MAXINT);
-
+		if(gameBoard.getPossibleMoves() < gameBoard.size*gameBoard.size/SIZE_DIVISION)
+			result = minimax(DEEPER_LIMIT, MYTURN, MININT, MAXINT);
+		else
+			result = minimax(LIMIT_DEPTH, MYTURN, MININT, MAXINT);		
+		
 		move.Row = result[1];
 		move.Col = result[2];
 		move.P = piece;
