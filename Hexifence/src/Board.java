@@ -121,6 +121,7 @@ public class Board {
 	public void determineCaptureValues(){
 		// initialise capture values as 0 first
 		initialiseCaptureValue();
+		avlbCaptures = 0;
 
 		// pass the top left tile of each hexagonal cell
 		// to check if this cell can be captured by single move
@@ -441,10 +442,12 @@ public class Board {
 	}
 	
 	/** Return maximum streak possible by one player on the current board **/
-	public int getMaxStreak(int depthCap, int score){
+	public int getMaxStreak(int depthCap){
 		// No available captures - Streak ended
-		if(avlbCaptures == 0) return 0;
+		if(avlbCaptures <= 0 || depthCap <= 0) return 0;
+		int score = 0;
 		
+		outerloop:
 		for(int i=0; i<size; i++) {
 			for(int j=0; j<size; j++) {
 				if(checkTile(i, j)) {
@@ -457,11 +460,12 @@ public class Board {
 						tempMove.Row = i;
 						tempMove.Col = j;
 						setBoard(tempMove);
+						
 						// Recursively get the rest of the streak
-						if(score < depthCap)
-							score = getMaxStreak(depthCap, score) + captureValue;
+						score = getMaxStreak(depthCap-1) + captureValue;
+						
 						undoMove(tempMove);
-						if(score >= depthCap) return score;
+						if (score > 0) return score;
 					}
 				}
 			}

@@ -41,9 +41,9 @@ public class SongtNmirpuriClever implements Player, Piece {
 	public static final int THEIR_STREAK = 2;
 	public static final int MY_CAPTURE = 1;
 	public static final int THEIR_CAPTURE = 3;
-	public static final int SIZE_DIVISION = 20;
-	public static final int LIMIT_DEPTH = 4;
-	public static final int DEEPER_LIMIT = 5;
+	public static final int SIZE_DIVISION = 11;
+	public static final int LIMIT_DEPTH = 3;
+	public static final int DEEPER_LIMIT = 7;
 
 	
 	@Override
@@ -103,12 +103,12 @@ public class SongtNmirpuriClever implements Player, Piece {
 				score += MY_CAPTURE*gameBoard.blueHex - THEIR_CAPTURE*gameBoard.redHex;
 			else
 				score += MY_CAPTURE*gameBoard.redHex - THEIR_CAPTURE*gameBoard.blueHex;
-			
+		
 			// Get the max streak
 			if (turn == MYTURN)
-				score += MY_STREAK*gameBoard.getMaxStreak(LIMIT_DEPTH, 0);
+				score += MY_STREAK*gameBoard.getMaxStreak(LIMIT_DEPTH-2);
 			else
-				score -= THEIR_STREAK*gameBoard.getMaxStreak(LIMIT_DEPTH, 0);
+				score -= THEIR_STREAK*gameBoard.getMaxStreak(LIMIT_DEPTH-2);
 
 			return new int[] {score, bestRow, bestCol};
 		}
@@ -186,7 +186,7 @@ public class SongtNmirpuriClever implements Player, Piece {
 		Move move = new Move();
 		int[] result;
 		
-		if(gameBoard.getPossibleMoves() < gameBoard.size*gameBoard.size/SIZE_DIVISION)
+		if(gameBoard.getPossibleMoves() < (gameBoard.size*gameBoard.size)/SIZE_DIVISION)
 			result = minimax(DEEPER_LIMIT, MYTURN, MININT, MAXINT);
 		else
 			result = minimax(LIMIT_DEPTH, MYTURN, MININT, MAXINT);		
