@@ -31,6 +31,7 @@ includes major functions to implement the approach taken (Refer to 'Approach Tak
 The main strategy to build this rational agent is minimax search tree with alpha beta
 pruning since this game is run by two competitive players. 
 An appropriate depth limit is set to satisfy the memory and time limit.
+additional move
 
 - Evaluation Function
 The features to consist of our evaluation function are number of hexs captured by either

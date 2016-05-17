@@ -5,15 +5,14 @@
  * @version 1.0
  * 
  * Attribution: 
- *  The basic frame of generatePosbMoves() function in this script was referred from
- *  https://www.ntu.edu.sg/home/ehchua/programming/java/JavaGame_TicTacToe_AI.html
+ *  The basic frame of generatePosbMoves() function in this script
+ *  was referred from
+ *  www.ntu.edu.sg/home/ehchua/programming/java/JavaGame_TicTacToe_AI.html
  * 
  *  For shuffle array function
- *  http://stackoverflow.com/questions/1519736/random-shuffling-of-an-array
+ *  stackoverflow.com/questions/1519736/random-shuffling-of-an-array
  *  
  */
-
-// probably can create hex cell and make use of it in undoMove and setBoard
 
 import java.util.*;
 import java.io.PrintStream;
@@ -25,8 +24,11 @@ public class Board {
 	public int size; // The size of the board (4*n-1)
 	public Tile[][] board; // Represents the entire board
 	private int possibleMoves = 0; // Number of possible moves at this state
-	private int maxByOneMove = 0;  // Maximum number of hexagonal cells that can be captured by one move (0, 1, 2)
-	private int avlbCaptures = 0; // Number of hexagonal cells available for capture by a single move
+	
+	// Maximum number of hexagonal cells that can be captured by one move
+	private int maxByOneMove = 0; 
+	// Number of hexagonal cells available for capture by a single move
+	private int avlbCaptures = 0; 
 
 	public int blueHex = 0; // Number of hexagons captured by blue player
 	public int redHex = 0; // Number of hexagons captured by red player
@@ -61,6 +63,7 @@ public class Board {
 		}
 	}
 	
+	
 	/**
 	 * Print this board
 	 */
@@ -75,7 +78,8 @@ public class Board {
 	}
 	
 	/**
-	 * Given a tile point using i, j, returns true if the tile coordinate is valid
+	 * Given a tile point using i, j, returns true 
+	 * if the tile coordinate is valid
 	 * Valid tiles are tiles that can have +, R or G on it.
 	 * 
 	 * Hexagon centers and boundaries therefore return false
@@ -115,6 +119,7 @@ public class Board {
 
 	}
 
+
 	/** Determine captureValue of each tile on the board.
 	 * Simultaneously uses the values to populate avlbCaptures
 	 */
@@ -126,26 +131,31 @@ public class Board {
 		// to check if this cell can be captured by single move
 		for(int i=0; i<size; i+=2)
 			for(int j=0; j<size ; j+=2)
-				// increase avlbCaptures if this cell is available for capture by single move 
+				// increase avlbCaptures if this cell is available
+				//for capture by single move 
 				avlbCaptures += determineCaptureValue(i, j);
 	}
+
 	
-	/** Determine if the given hexagon by x,y coordinate can be captured by single move or not
+	/** Determine if the given hexagon by x,y coordinate 
+	 *  can be captured by single move or not
 	 *  and increase the capture value of the available tile by 1
 	 *  MaxByOneMove is updated every time this function is called
 	 * @param i x coordinate of the hexagon
 	 * @param j y coordinate of the hexagon
-	 * @return  Returns 1 if hex can be captured, otherwise 0 (used for counter)
+	 * @return  Returns 1 if hex can be captured, otherwise 0 (counter)
 	 */
 	public int determineCaptureValue(int i, int j){
-		// number or plus character in the corresponding hex cell to the given Tile
-		// there should be only one plus character within this cell to capture it
+		// number of plus char in the hex of the given Tile
+		// there should be only one plus character
+		// within this cell to capture it
 		int numPlus = 0;
 		
 		// boundary checking boolean variable
 		boolean isOutOfBound = false;
 		
-		// int Arrays which contain x,y coordinates of the 5 adjacent tiles 
+		// int Arrays which contain 
+		// x,y coordinates of the 5 adjacent tiles 
 		int[] iValues = {i, i+1, i, i+2, i+1, i+2};
 		int[] jValues = {j, j, j+1, j+1, j+2, j+2};
 		
@@ -172,9 +182,11 @@ public class Board {
 		// if there is only one plus '+' character and within boundary 
 		// increase the capture value of the '+' tile object
 		if (numPlus == 1 && !isOutOfBound){
-			board[iIncrease][jIncrease].setCaptureValue(board[iIncrease][jIncrease].getCaptureValue()+1);
+			board[iIncrease][jIncrease].
+			setCaptureValue(board[iIncrease][jIncrease].getCaptureValue()+1);
 			
-			// Use capture value to now determine the max you can capture in one move
+			// Use capture value to now determine the max
+			// you can capture in one move
 			if (board[iIncrease][jIncrease].getCaptureValue() > maxByOneMove)
 				maxByOneMove = board[iIncrease][jIncrease].getCaptureValue();
 			
@@ -220,14 +232,10 @@ public class Board {
 						
 						// update character as '-'
 						board[i+1][j+1].setCharValue('-');
-						
 						counter--;
-						
 					}
-					
 					if(counter <= 0)
-						break outerloop;
-						
+						break outerloop;	
 				}
 			}
 		}
@@ -267,7 +275,8 @@ public class Board {
 					if(checkTile(i,j)){
 						counter -= isCaptured(i, j, move.P);
 					}
-					// if there is no cell to capture for this move anymore, break
+					// if there is no cell to capture 
+					// for this move anymore, break
 					if (counter == 0)
 						break outerloop;
 				}
@@ -291,6 +300,7 @@ public class Board {
 					
 
 	}
+	
 	
 	/**
 	 * Check if this hexagon has been captured
@@ -352,12 +362,14 @@ public class Board {
 		return captured;
 	}
 	
+	
 	/**
 	 * return all possible moves from the current state
 	 * @return array of Moves
 	 */
 	public List<Move> generatePosbMoves(int p){
-		List<Move> posbMoves = new ArrayList<Move>(); // allocate List
+		// allocate List
+		List<Move> posbMoves = new ArrayList<Move>(); 
 		 
 	    // If gameover, i.e., no possible move
 	    if (getPossibleMoves() == 0) {
@@ -386,7 +398,8 @@ public class Board {
 			}
 		}
 		
-		// shuffle array so that the agent won't just take the first possible move
+		// shuffle array 
+		// so that the agent won't just take the first possible move
 		// when most of the moves have the same evaluation value
 		shuffleArray(posbMoves);
 		
@@ -427,20 +440,22 @@ public class Board {
 	}
 	
 	/** Return available cells for capture
-	 * @return Number of hexagonal cells available for capture by a single move
+	 * @return Number of hex cells available for capture by a single move
 	 */
 	public int getAvailableCaptures(){
 		return avlbCaptures;
 	}
 	
 	/** Return maximum number of cells which can be captured by one move
-	 * @return maximum number of hexagonal cells which can be captured by one move
+	 * @return maximum number of hexs which can be captured by one move
 	 */
 	public int getMaxByOneMove(){
 		return maxByOneMove;
 	}
 	
-	/** Return maximum streak possible by one player on the current board **/
+	/** Return maximum streak possible by one player on the current board
+	 * @return maximum number of streaks
+	 */
 	public int getMaxStreak(int depthCap, int score){
 		// No available captures - Streak ended
 		if(avlbCaptures == 0) return 0;
@@ -459,7 +474,8 @@ public class Board {
 						setBoard(tempMove);
 						// Recursively get the rest of the streak
 						if(score < depthCap)
-							score = getMaxStreak(depthCap, score) + captureValue;
+							score = 
+							getMaxStreak(depthCap, score) + captureValue;
 						undoMove(tempMove);
 						if(score >= depthCap) return score;
 					}
@@ -469,3 +485,5 @@ public class Board {
 		return score;
 	}
 }
+
+

@@ -9,7 +9,7 @@
  * 
  * Attribution: 
  *  The basic frame of minimax function in this script was referred from
- *  https://www.ntu.edu.sg/home/ehchua/programming/java/JavaGame_TicTacToe_AI.html
+ *  www.ntu.edu.sg/home/ehchua/programming/java/JavaGame_TicTacToe_AI.html
  *  
  */
 
@@ -20,12 +20,17 @@ import aiproj.hexifence.*;
 
 public class SongtNmirpuri implements Player, Piece {
 	
+	// maximum int for using alpha beta pruning
 	public static final int MAXINT =  Integer.MAX_VALUE / 2;
+	// minimum int for using alpha beta pruning
 	public static final int MININT =  Integer.MIN_VALUE / 2;
+	
 	public static final int MYTURN =  1;
 	public static final int OPPTURN =  2;
+	
 	public Board gameBoard; // the board to put pieces on
 	public int piece; // either BLUE(1) or RED(2) 
+	
 	// represent the state of this board
 	public int boardState = Piece.EMPTY; 
 	
@@ -63,8 +68,6 @@ public class SongtNmirpuri implements Player, Piece {
 	 * + alpha beta pruning
 	 * @return Move : the next move
 	 */
-	// check if the end of game has reached when generating children
-	// = if getwinner() == BLUE or RED ... RETURN 1 OR -1 OR 0
 	public int[] minimax(int depth, int turn, int alpha, int beta){
 		List<Move> posbMoves;
 
@@ -79,12 +82,13 @@ public class SongtNmirpuri implements Player, Piece {
 			}
 		}
 		
+		
 	    int score;
 	    int bestRow = -1;
 	    int bestCol = -1;
 	     
 	    
-		// if game finished, win score 1, lose score -1, draw score 0
+		// if game finished, set the score
 		if(getWinner() != 0){
 			if(getWinner() == Piece.DEAD)
 				score = DRAW;
@@ -100,10 +104,12 @@ public class SongtNmirpuri implements Player, Piece {
 		else if(depth <= 0){
 			score = 0;
 			if (piece == BLUE)
-				score += MY_CAPTURE*gameBoard.blueHex - THEIR_CAPTURE*gameBoard.redHex;
+				score += MY_CAPTURE*gameBoard.blueHex
+						- THEIR_CAPTURE*gameBoard.redHex;
 			else
-				score += MY_CAPTURE*gameBoard.redHex - THEIR_CAPTURE*gameBoard.blueHex;
-			
+				score += MY_CAPTURE*gameBoard.redHex
+						- THEIR_CAPTURE*gameBoard.blueHex;
+		
 			// Get the max streak
 			if (turn == MYTURN)
 				score += MY_STREAK*gameBoard.getMaxStreak(LIMIT_DEPTH, 0);
@@ -127,7 +133,8 @@ public class SongtNmirpuri implements Player, Piece {
 	            // play (and terminate at) a definite safe move if possible
 	            if (depth == LIMIT_DEPTH && turn == MYTURN) {
 	    			// Test if opp player can win something on the next move
-	            	int getMaxByTwoMoves = getMaxByFirstMove + gameBoard.getMaxByOneMove();
+	            	int getMaxByTwoMoves = 
+	            			getMaxByFirstMove + gameBoard.getMaxByOneMove();
 	    			if (getMaxByTwoMoves == 0) {
 	    				return new int[] {SAFEST_MOVE, move.Row, move.Col};
 	    			}
@@ -135,6 +142,7 @@ public class SongtNmirpuri implements Player, Piece {
 	            
 	            if (turn == MYTURN) {  // needs to maximize value
 	            	// if this move gives additional move
+	            	// the next layer is Max again
 	            	if (move.P == Piece.BLUE && tempB < gameBoard.blueHex){
 	            		score = minimax(depth - 1, MYTURN, alpha, beta)[0];	
 	            	}else if (move.P == Piece.RED && tempR < gameBoard.redHex){
@@ -152,6 +160,7 @@ public class SongtNmirpuri implements Player, Piece {
 	               }
 	            } else {  // needs to minimize value
 	            	// if this move gives additional move
+	            	// the next layer is Min again
 	            	if (move.P == Piece.BLUE && tempB < gameBoard.blueHex)
 	            		score = minimax(depth - 1, OPPTURN, alpha, beta)[0];	
 	            	else if (move.P == Piece.RED && tempR < gameBoard.redHex)
@@ -173,8 +182,9 @@ public class SongtNmirpuri implements Player, Piece {
 	            // cut-off
 	            if (alpha >= beta) break;
 	         }
-
-	        return new int[] {(turn == MYTURN) ? alpha : beta, bestRow, bestCol};	
+			
+	        return new int[] 
+	        		{(turn == MYTURN) ? alpha : beta, bestRow, bestCol};	
 		}
 		
 	}
@@ -182,22 +192,26 @@ public class SongtNmirpuri implements Player, Piece {
 
 	@Override
 	public Move makeMove() {
-		// get all possible moves as an array
 		Move move = new Move();
 		int[] result;
 		
-		if(gameBoard.getPossibleMoves() < gameBoard.size*gameBoard.size/SIZE_DIVISION)
+		// if the game is close to the end, increase the limit depth
+		if(gameBoard.getPossibleMoves() < 
+				gameBoard.size*gameBoard.size/SIZE_DIVISION)
 			result = minimax(DEEPER_LIMIT, MYTURN, MININT, MAXINT);
 		else
 			result = minimax(LIMIT_DEPTH, MYTURN, MININT, MAXINT);		
 		
+		// get the next move
 		move.Row = result[1];
 		move.Col = result[2];
 		move.P = piece;
 
+		// update the board
 		gameBoard.setBoard(move);
 		
-		// return the Move object so that the opponent can update their board config
+		// return the Move object
+		// so that the opponent can update their board config
 		return move;
 	}
 
