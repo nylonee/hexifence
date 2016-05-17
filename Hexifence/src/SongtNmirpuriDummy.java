@@ -98,9 +98,9 @@ public class SongtNmirpuriDummy implements Player, Piece {
 			
 			// Get the max streak
 			if (turn == MYTURN)
-				score += MY_STREAK*gameBoard.getMaxStreak(LIMIT_DEPTH);
+				score += MY_STREAK*gameBoard.getMaxStreak(LIMIT_DEPTH, 0);
 			else
-				score -= THEIR_STREAK*gameBoard.getMaxStreak(LIMIT_DEPTH);
+				score -= THEIR_STREAK*gameBoard.getMaxStreak(LIMIT_DEPTH, 0);
 
 			return new int[] {score, bestRow, bestCol};
 		}
@@ -184,7 +184,6 @@ public class SongtNmirpuriDummy implements Player, Piece {
 		move.Col = result[2];
 		move.P = piece;
 
-		System.out.println("Max Streak: " + gameBoard.getMaxStreak(LIMIT_DEPTH));
 		gameBoard.setBoard(move);
 		
 		// return the Move object so that the opponent can update their board config
