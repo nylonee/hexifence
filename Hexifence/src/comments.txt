@@ -33,7 +33,7 @@ pruning since this game is run by two competitive players.
 An appropriate depth limit is set to satisfy the memory and time limit.
 
 - Evaluation Function
-The features to consist of our evaluation functions are number of hexs captured by either
+The features to consist of our evaluation function are number of hexs captured by either
 player or opponent and the number of 
 
 - Creative Techniques
