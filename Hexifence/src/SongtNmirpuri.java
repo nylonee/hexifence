@@ -46,9 +46,9 @@ public class SongtNmirpuri implements Player, Piece {
 	public static final int THEIR_STREAK = 2;
 	public static final int MY_CAPTURE = 1;
 	public static final int THEIR_CAPTURE = 3;
-	public static final int SIZE_DIVISION = 20;
-	public static final int LIMIT_DEPTH = 4;
-	public static final int DEEPER_LIMIT = 5;
+	public static final int SIZE_DIVISION = 10;
+	public static final int LIMIT_DEPTH = 3;
+	public static final int DEEPER_LIMIT = 8;
 
 	
 	@Override
